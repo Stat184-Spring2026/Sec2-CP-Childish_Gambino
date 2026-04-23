@@ -36,8 +36,8 @@ Checkpoints #1-#5 must be completed __*in person*__.
 The following checklist provides your team with an expanded listing of all elements necessary in your group project. You can keep track of what you have and have yet to complete by editing this file and placing an x inside of the square brackets at the start of each item (i.e., [x]).
 
 - [X] Read through the Project Guidelines.
-- [ ] Form a team with 1-2 other individuals in your section of Stat 184.
-- [ ] Complete Checkpoint #1 and make a team contract.
+- [X] Form a team with 1-2 other individuals in your section of Stat 184.
+- [X] Complete Checkpoint #1 and make a team contract.
 - [ ] Create (and update) a detailed plan for your project.
   - [ ] Place a copy of your plan in your repo.
 - [ ] Brainstorm what you're interested in exploring and look for potential data sources. (See the [Data and Topics](#data-and-topics) for resources.)
