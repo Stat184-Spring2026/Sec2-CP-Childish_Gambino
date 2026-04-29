@@ -88,3 +88,25 @@ kable(
   caption = "State College Temperature Summary by Season and 10-Year Period"
 )
 
+
+philadelphia_monthly <- philadelphia_weather |>
+  mutate(month = as.Date(format(date, "%Y-%m-01"))) |>
+  group_by(month) |>
+  summarize(
+    average_temp = mean(avg_temp, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  mutate(place = "Philadelphia")
+
+state_college_monthly <- state_college_weather |>
+  mutate(month = as.Date(format(date, "%Y-%m-01"))) |>
+  group_by(month) |>
+  summarize(
+    average_temp = mean(avg_temp, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  mutate(place = "State College")
+
+combined_monthly <- bind_rows(philadelphia_monthly, state_college_monthly)
+
+
