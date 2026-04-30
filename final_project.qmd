@@ -1,7 +1,20 @@
 ---
 title: "final_project"
 format: pdf
+
+execute:
+  echo: false
+  warning: false
+  message: false
 ---
+
+```{r}
+#| label: setup
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+
+```
 
 # Temperate Insights
 
@@ -26,8 +39,8 @@ philadelphia_weather <- read_csv("C:\\Users\\quinn\\OneDrive - The Pennsylvania 
       month_num %in% c(9, 10, 11) ~ "Fall"
     ),
     decade = case_when(
-      year >= 2006 & year <= 2015 ~ "2006-2015",
-      year >= 2016 & year <= 2025 ~ "2016-2025",
+      year >= 2006 & year <= 2015 ~ "06-15",
+      year >= 2016 & year <= 2025 ~ "16-25",
       TRUE ~ "Other"
     )
   ) |>
@@ -50,8 +63,8 @@ state_college_weather <- read_csv("C:\\Users\\quinn\\OneDrive - The Pennsylvania
       month_num %in% c(9, 10, 11) ~ "Fall"
     ),
     decade = case_when(
-      year >= 2006 & year <= 2015 ~ "2006-2015",
-      year >= 2016 & year <= 2025 ~ "2016-2025",
+      year >= 2006 & year <= 2015 ~ "06-15",
+      year >= 2016 & year <= 2025 ~ "16-25",
       TRUE ~ "Other"
     )
   ) |>
@@ -74,10 +87,7 @@ philadelphia_table <- philadelphia_weather |>
   ) |>
   arrange(decade, factor(season, levels = c("Winter", "Spring", "Summer", "Fall")))
 
-kable(
-  philadelphia_table,
-  caption = "Philadelphia Temperature Summary by Season and 10-Year Period"
-)
+
 
 state_college_table <- state_college_weather |>
   filter(decade != "Other") |>
@@ -93,10 +103,7 @@ state_college_table <- state_college_weather |>
   ) |>
   arrange(decade, factor(season, levels = c("Winter", "Spring", "Summer", "Fall")))
 
-kable(
-  state_college_table,
-  caption = "State College Temperature Summary by Season and 10-Year Period"
-)
+
 
 ```
 
@@ -107,14 +114,14 @@ kable(
   philadelphia_table,
   caption = "Philadelphia Temperature Summary by Season and 10-Year Period",
   col.names = c(
-    "10-Year Period",
+    "Decade",
     "Season",
-    "Average High (F)",
-    "Average Low (F)",
-    "Average Temp (F)",
-    "Hottest Day (F)",
-    "Coldest Day (F)",
-    "Days Recorded"
+    "Avg High",
+    "Avg Low",
+    "Avg Temp",
+    "Hottest",
+    "Coldest",
+    "Days"
   ),
   align = "c"
 ) |>
@@ -125,24 +132,27 @@ kable(
   ) |>
   row_spec(0, bold = TRUE, color = "white", background = "#1F4E79") |>
   column_spec(1, bold = TRUE) |>
-  pack_rows("2006-2015", 1, 4) |>
-  pack_rows("2016-2025", 5, 8)
+  pack_rows("06-15", 1, 4) |>
+  pack_rows("16-25", 5, 8)
 ```
+## Philadelphia table interpretation
+This table showcases the four seasons and data about them for both decades in degrees Fahrenheit. Notable figures are the high of 103 in the first decade and low of -2 also in the first decade. As well as, average temperatures spanning from 25.2 to 74.8. 
 
+{{< pagebreak >}}
 ```{r}
 #State college table
 kable(
   state_college_table,
   caption = "State College Temperature Summary by Season and 10-Year Period",
   col.names = c(
-    "10-Year Period",
+    "Decade",
     "Season",
-    "Average High (F)",
-    "Average Low (F)",
-    "Average Temp (F)",
-    "Hottest Day (F)",
-    "Coldest Day (F)",
-    "Days Recorded"
+    "Avg High",
+    "Avg Low",
+    "Avg Temp",
+    "Hottest",
+    "Coldest",
+    "Days"
   ),
   align = "c"
 ) |>
@@ -153,18 +163,18 @@ kable(
   ) |>
   row_spec(0, bold = TRUE, color = "white", background = "#7A2E2E") |>
   column_spec(1, bold = TRUE) |>
-  pack_rows("2006-2015", 1, 4) |>
-  pack_rows("2016-2025", 5, 8)
+  pack_rows("06-15", 1, 4) |>
+  pack_rows("16-25", 5, 8)
 
 
 
 ```
+##State College table interpretation
+This table showcases the four seasons and temperature data for State College across both decades in degrees Fahrenheit. Notable figures include the highest recorded temperature of 101°F during summer in the first decade and the lowest recorded temperature of -9°F during winter in the first decade. The average temperatures range from 29.5°F in winter during 2006-2015 to 71.6°F in summer during 2016-2025. 
 
-You can add options to executable code like this 
+## Insights from the table
+Comparing the Philadelphia and State College tables shows that Philadelphia is consistently warmer across every season and both 10-year periods. Philadelphia’s average winter temperatures were 33.9°F from 2006-2015 and 35.0°F from 2016-2025, while State College’s were lower at 29.5°F and 31.5°F. The same pattern appears in summer, where Philadelphia averaged 74.2°F and 74.8°F, compared to State College’s 70.8°F and 71.6°F. Both locations show a slight increase in average temperatures from the first decade to the second, especially in winter and summer, suggesting a small warming trend over time. Philadelphia also had the highest recorded temperature overall at 103°F, while State College reached 101°F. However, State College had the colder extreme, dropping to -9°F, compared to Philadelphia’s lowest temperature of -2°F. Overall, the tables suggest that Philadelphia has a warmer and slightly milder climate, while State College experiences colder winter conditions and a wider range of cold extremes. This could be credited to State College's higher elevation and distance from the coast. 
 
-```{r}
-#| echo: false
-2 * 2
-```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+
+
