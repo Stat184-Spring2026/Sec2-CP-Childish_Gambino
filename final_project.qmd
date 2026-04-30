@@ -1,25 +1,46 @@
 ---
-title: "final_project"
-format: pdf
+title: "Comparing Weather Trends in State College and Philadelphia, 2006-2025"
+author:
+  - "Evan Grebner"
+  - "Quinn Hughes"
+  - "Ralph Halabi"
+date: today
+format:
+  pdf:
+    toc: true
+    number-sections: true
+execute:
+  echo: false
+  warning: false
+  message: false
 ---
 
-## Quarto
+```{r setup}
+#| label: setup
+#| include: false
+# Author:   Evan Grebner
+# Reviewer: [TBD]
+# Purpose:  Load the required packages for the report.
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+# Style: All code in this document uses the BOAST Style Guide
 
-## Running Code
+# Tidyverse family of Packages for data wrangling and plotting
+library(dplyr)
+library(tidyr)
+library(readr)
+library(lubridate)
+library(ggplot2)
 
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
-
-```{r}
-1 + 1
+# Tables
+library(knitr)
+library(kableExtra)
 ```
 
-You can add options to executable code like this 
+```{r data-wrangling}
+#| label: data-wrangling
+#| include: false
+# Author:   
+# Reviewer:
+# Purpose:  
 
-```{r}
-#| echo: false
-2 * 2
 ```
-
-The `echo: false` option disables the printing of code (only output is displayed).
