@@ -1,15 +1,15 @@
 rm(list = ls()) # clean up; good hygiene
 
-# Step 1: Load Packages ----
+# Step 1: Load Packages
 library(tidyverse)
 library(ggplot2)
 library(dplyr)
 
-# Step 2: Load Data ----
+# Step 2: Load Data
 state_college_weather <- read.csv("~/Desktop/penn state/STAT 184/Childish_Gambino/Sec2-CP-Childish_Gambino/state_college_weather.csv", header = TRUE)
 philadelphia_weather <- read.csv("~/Desktop/penn state/STAT 184/Childish_Gambino/Sec2-CP-Childish_Gambino/philadelphia_weather.csv", header = TRUE)
 
-# Step 3: Clean and Combine ----
+# Step 3: Clean and Combine
 weather_combined <- bind_rows(
   philadelphia_weather |> mutate(City = "Philadelphia"),
   state_college_weather |> mutate(City = "State College")
