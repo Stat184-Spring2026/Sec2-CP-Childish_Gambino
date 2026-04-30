@@ -16,7 +16,7 @@ library(kableExtra)
 
 ```
 
-# Temperate Insights
+# Temperature Insights
 
 This section explores the temperature data for Philadelphia and State College. The data includes daily maximum, minimum, and observed temperatures. We are trying to find out how temperature patterns compare between the two locations, how those patterns vary across the four seasons, and how the trends have changed or stayed the same over the last 20 years. This will be shown through a table and plots. 
 
@@ -169,12 +169,54 @@ kable(
 
 
 ```
-##State College table interpretation
+## State College table interpretation
 This table showcases the four seasons and temperature data for State College across both decades in degrees Fahrenheit. Notable figures include the highest recorded temperature of 101°F during summer in the first decade and the lowest recorded temperature of -9°F during winter in the first decade. The average temperatures range from 29.5°F in winter during 2006-2015 to 71.6°F in summer during 2016-2025. 
 
-## Insights from the table
-Comparing the Philadelphia and State College tables shows that Philadelphia is consistently warmer across every season and both 10-year periods. Philadelphia’s average winter temperatures were 33.9°F from 2006-2015 and 35.0°F from 2016-2025, while State College’s were lower at 29.5°F and 31.5°F. The same pattern appears in summer, where Philadelphia averaged 74.2°F and 74.8°F, compared to State College’s 70.8°F and 71.6°F. Both locations show a slight increase in average temperatures from the first decade to the second, especially in winter and summer, suggesting a small warming trend over time. Philadelphia also had the highest recorded temperature overall at 103°F, while State College reached 101°F. However, State College had the colder extreme, dropping to -9°F, compared to Philadelphia’s lowest temperature of -2°F. Overall, the tables suggest that Philadelphia has a warmer and slightly milder climate, while State College experiences colder winter conditions and a wider range of cold extremes. This could be credited to State College's higher elevation and distance from the coast. 
 
+# Plot
+
+```{r}
+#Making the plot 
+# Group by month
+philadelphia_monthly <- philadelphia_weather |>
+  mutate(month = as.Date(format(date, "%Y-%m-01"))) |>
+  group_by(month) |>
+  summarize(
+    average_temp = mean(avg_temp, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  mutate(place = "Philadelphia")
+
+state_college_monthly <- state_college_weather |>
+  mutate(month = as.Date(format(date, "%Y-%m-01"))) |>
+  group_by(month) |>
+  summarize(
+    average_temp = mean(avg_temp, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  mutate(place = "State College")
+
+#Bind to make one table
+combined_weather <- bind_rows(
+  philadelphia_weather |> mutate(place = "Philadelphia"),
+  state_college_weather |> mutate(place = "State College")
+)
+#Plot 
+ggplot(combined_weather, aes(x = season, y = avg_temp, fill = place)) +
+  geom_boxplot() +
+  labs(
+    title = "Temperature Distribution by Season",
+    subtitle = "Philadelphia generally has warmer temperatures than State College",
+    x = "Season",
+    y = "Average daily temperature (F)",
+    fill = "Place"
+  ) +
+  theme_minimal()
+
+```
+
+## Analysis
+Comparing the Philadelphia and State College tables and plot shows that Philadelphia is consistently warmer across every season and both 10-year periods. Philadelphia’s average winter temperatures were 33.9°F from 2006-2015 and 35.0°F from 2016-2025, while State College’s were lower at 29.5°F and 31.5°F. The same pattern appears in summer, where Philadelphia averaged 74.2°F and 74.8°F, compared to State College’s 70.8°F and 71.6°F. Both locations show a slight increase in average temperatures from the first decade to the second, especially in winter and summer, suggesting a small warming trend over time. Philadelphia also had the highest recorded temperature overall at 103°F, while State College reached 101°F. However, State College had the colder extreme, dropping to -9°F, compared to Philadelphia’s lowest temperature of -2°F. Overall, the tables suggest that Philadelphia has a warmer and slightly milder climate, while State College experiences colder winter conditions and a wider range of cold extremes. This could be credited to State College's higher elevation and distance from the coast. 
 
 
 
