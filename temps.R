@@ -107,6 +107,19 @@ state_college_monthly <- state_college_weather |>
   ) |>
   mutate(place = "State College")
 
-combined_monthly <- bind_rows(philadelphia_monthly, state_college_monthly)
 
+combined_weather <- bind_rows(
+  philadelphia_weather |> mutate(place = "Philadelphia"),
+  state_college_weather |> mutate(place = "State College")
+)
 
+ggplot(combined_weather, aes(x = season, y = avg_temp, fill = place)) +
+  geom_boxplot() +
+  labs(
+    title = "Temperature Distribution by Season",
+    subtitle = "Philadelphia generally has warmer temperatures than State College",
+    x = "Season",
+    y = "Average daily temperature (F)",
+    fill = "Place"
+  ) +
+  theme_minimal()
