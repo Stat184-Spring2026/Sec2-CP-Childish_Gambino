@@ -218,5 +218,44 @@ ggplot(combined_weather, aes(x = season, y = avg_temp, fill = place)) +
 ## Analysis
 Comparing the Philadelphia and State College tables and plot shows that Philadelphia is consistently warmer across every season and both 10-year periods. Philadelphia’s average winter temperatures were 33.9°F from 2006-2015 and 35.0°F from 2016-2025, while State College’s were lower at 29.5°F and 31.5°F. The same pattern appears in summer, where Philadelphia averaged 74.2°F and 74.8°F, compared to State College’s 70.8°F and 71.6°F. Both locations show a slight increase in average temperatures from the first decade to the second, especially in winter and summer, suggesting a small warming trend over time. Philadelphia also had the highest recorded temperature overall at 103°F, while State College reached 101°F. However, State College had the colder extreme, dropping to -9°F, compared to Philadelphia’s lowest temperature of -2°F. Overall, the tables suggest that Philadelphia has a warmer and slightly milder climate, while State College experiences colder winter conditions and a wider range of cold extremes. This could be credited to State College's higher elevation and distance from the coast. 
 
+```{r}
+#Slope plot
+philadelphia_slope <- philadelphia_table |>
+  select(decade, season, average_temp) |>
+  mutate(place = "Philadelphia")
+
+state_college_slope <- state_college_table |>
+  select(decade, season, average_temp) |>
+  mutate(place = "State College")
+
+combined_slope <- bind_rows(philadelphia_slope, state_college_slope) |>
+  mutate(
+    decade = factor(decade, levels = c("06-15", "16-25")),
+    season = factor(season, levels = c("Winter", "Spring", "Summer", "Fall"))
+  )
+
+ggplot(
+  combined_slope,
+  aes(x = decade, y = average_temp, group = interaction(place, season), color = place)
+) +
+  geom_line(linewidth = 1) +
+  geom_point(size = 3) +
+  facet_wrap(~ season, scales = "free_y") +
+  labs(
+    title = "Change in Average Temperature by Season and Location",
+    subtitle = "Average temperatures compared between 2006-2015 and 2016-2025",
+    x = "10-Year Period",
+    y = "Average Temperature (F)",
+    color = "Location"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(face = "bold"),
+    legend.position = "bottom"
+  )
+
+
+```
+
 
 
