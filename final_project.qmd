@@ -257,5 +257,6 @@ ggplot(
 
 ```
 
-
+## Overall Trend
+We can also see clearly from this plot that, while the changes are not massive, temperatures are rising in all four seasons and in both places. The slopes for all eight lines are very similar signifying that the temperature changes are at the least a regional trend. This could be caused by global warming or climate change.
 
