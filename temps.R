@@ -1,5 +1,6 @@
 library(tidyverse)
 library(knitr)
+library(kableExtra)
 
 # wrangle and sort by season, 10 year chunk, and average temps 
 philadelphia_weather <- read_csv("C:\\Users\\quinn\\OneDrive - The Pennsylvania State University\\Yr2\\Stat184\\GitHub\\Sec2-CP-Childish_Gambino\\PhillyData.csv") |>
@@ -123,3 +124,56 @@ ggplot(combined_weather, aes(x = season, y = avg_temp, fill = place)) +
     fill = "Place"
   ) +
   theme_minimal()
+
+#Format the tables so that they are professional 
+
+kable(
+  philadelphia_table,
+  caption = "Philadelphia Temperature Summary by Season and 10-Year Period",
+  col.names = c(
+    "10-Year Period",
+    "Season",
+    "Average High (F)",
+    "Average Low (F)",
+    "Average Temp (F)",
+    "Hottest Day (F)",
+    "Coldest Day (F)",
+    "Days Recorded"
+  ),
+  align = "c"
+) |>
+  kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed"),
+    full_width = FALSE,
+    position = "center"
+  ) |>
+  row_spec(0, bold = TRUE, color = "white", background = "#1F4E79") |>
+  column_spec(1, bold = TRUE) |>
+  pack_rows("2006-2015", 1, 4) |>
+  pack_rows("2016-2025", 5, 8)
+
+kable(
+  state_college_table,
+  caption = "State College Temperature Summary by Season and 10-Year Period",
+  col.names = c(
+    "10-Year Period",
+    "Season",
+    "Average High (F)",
+    "Average Low (F)",
+    "Average Temp (F)",
+    "Hottest Day (F)",
+    "Coldest Day (F)",
+    "Days Recorded"
+  ),
+  align = "c"
+) |>
+  kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed"),
+    full_width = FALSE,
+    position = "center"
+  ) |>
+  row_spec(0, bold = TRUE, color = "white", background = "#7A2E2E") |>
+  column_spec(1, bold = TRUE) |>
+  pack_rows("2006-2015", 1, 4) |>
+  pack_rows("2016-2025", 5, 8)
+
