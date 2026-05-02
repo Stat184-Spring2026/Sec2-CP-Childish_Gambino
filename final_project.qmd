@@ -44,3 +44,13 @@ library(kableExtra)
 # Purpose:  
 
 ```
+
+# Introduction
+
+Weather influences a surprising number of everyday decisions, whether it's what to wear, planning events, or even what you make for dinner. Yet most people rarely look further than the next day's forecast. Two cities can be only a couple hundred miles apart in the same state and still feel like completely different climates to someone who has been to both. State College and Philadelphia are a great example of this. State College sits inland in the Appalachian foothills with an elevation of approximately 1,200 feet, while Philadelphia lies on the eastern coastal plain near sea level. Their geographic separation, along with the difference in elevation, raises a natural question: how different is the weather that these two cities actually experience?
+
+This report will explore that question using the last two decades of daily weather records collected by the National Oceanic and Atmospheric Administration. There are over 7,000 daily observations for both cities, providing us with enough data to look at long-term weather trends and how their climates compare.
+
+Our work follows the Exploratory Data Analysis approach, focusing mainly on what the data actually reveals rather than trying to prove a specific point. We narrowed our analysis down to three main angles: how precipitation totals compare month by month, how temperature is distributed across the four seasons, and how each city's annual snowfall compares. Together, these angles paint a picture of two cities that are close in proximity but experience noticeably different climates.
+
+The remainder of this report describes the data we used and its provenance, takes a closer look at each of our angles of comparison, and concludes with a discussion of the patterns we noticed through this analysis.
