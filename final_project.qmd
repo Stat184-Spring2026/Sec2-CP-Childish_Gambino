@@ -15,14 +15,14 @@ execute:
   message: false
 ---
 
-```{r setup}
+```{r}
 #| label: setup
 #| include: false
 # Author:   Evan Grebner
 # Reviewer: [TBD]
 # Purpose:  Load the required packages for the report.
 
-# Style: All code in this document uses the BOAST Style Guide
+# Style: All code in this document uses the Tidyverse Style Guide
 
 # Tidyverse family of Packages for data wrangling and plotting
 library(dplyr)
@@ -36,7 +36,7 @@ library(knitr)
 library(kableExtra)
 ```
 
-```{r data-wrangling}
+```{r}
 #| label: data-wrangling
 #| include: false
 # Author:   
