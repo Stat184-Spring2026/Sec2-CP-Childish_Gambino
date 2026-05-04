@@ -49,8 +49,71 @@ CARE
 Collective Benefit
 Weather data is not privately owned information, which is why NOAA offer the data to the public. Weather can be especially destructive at different times of the year; the data helps track potential or eminent floods, hurricanes, tornadoes, blizzards and various other natural disasters to help warn the community and keep the aware. Climate research is also done using NOAA data to help understand long term climate trends and see how we can protect the planet and make it as habitable as possible for life on Earth.
 
+<<<<<<< Updated upstream
 Authority to Control
 Being that NOAA is a government agency, their work is supposed to act in the best interest of the people, which we believe they have been. The data being free to the public is one example of this, however other weather companies such as The Weather Channel and AccuWeather collect their own data in-house which is only available to them. They have been working to make it so NOAA can't publish their data for free as they feel it rivals their business model. Many scientists belive that weather has no borders however, and have been working to keep the weather data as open-source and collaborator friendly as possible.
+=======
+## FAIR and CARE Principles
+# FAIR and CARE Principles
+FAIR
+Findable
+The data was fairly easy to locate. Publicly available on the National Oceanic and Atmospheric Administration's (NOAA) website with an entire section dedicated to explaining how to select the correct dataset. Being that a lot of weather apps and companies use NOAA's data and them being government agency, they almost encourage those to utilize the data for whatever personal project people want to do.
+
+Accessible
+Having an entire webpage dedicated to selecting what dataset you want from any location and time frame in the United States, the data being inaccessible was not an issue. Again, NOAA is encouraging those to utilize their data.
+
+Interperable
+NOAA has their own code for some weather conditions, such as using 1 or 0 if there was or wasn't fog in the area, respectively and just having confusing column naming systems, such as WT11 for high wind for example. A legend could be found on NOAA's website luckily, so when the csv files were uploaded into R Studio, we just had to rename the columns to make it easier to analyze the data later on when we got to the analysis portion of the code.
+
+Reusable
+The data is absolutely reusable. Previous weather data is never going to change. Once the day passes, the weather is logged and stored for future reuse in data analytics. It's important to keep an organized weather data collection that is maintained often. NOAA does a great job with this to ensure future reusability when needed.
+
+CARE
+Collective Benefit
+Weather data is not privately owned information, which is why NOAA offer the data to the public. Weather can be especially destructive at different times of the year; the data helps track potential or eminent floods, hurricanes, tornadoes, blizzards and various other natural disasters to help warn the community and keep the aware. Climate research is also done using NOAA data to help understand long term climate trends and see how we can protect the planet and make it as habitable as possible for life on Earth.
+
+Authority to Control
+Being that NOAA is a government agency, their work is supposed to act in the best interest of the people, which we believe they have been. The data being free to the public is one example of this, however other weather companies such as The Weather Channel and AccuWeather collect their own data in-house which is only available to them. They have been working to make it so NOAA can't publish their data for free as they feel it rivals their business model. Many scientists belive that weather has no borders however, and have been working to keep the weather data as open-source and collaborator friendly as possible.
+
+Responsibility
+NOAA holds complete control over the accuracy of the data. In the grand scheme of things, being off by one degree on the temperature for one day seems like an insignificant difference overall, however when we have constantly advancing technology to track data, we want to assume that the data is being properly collected. It's also imperative when we are studying something serious like the possibility of a natural disaster occuring. Now their is little we can do against a Category 5 Hurricane or extreme flooding in a short period of time, however we can be prepared for it. If the data is misread or collected poorly and we underestimate how strong a storm ends up being, than NOAA would have to take responsibility for misreporting the data and underpreparing the community.
+
+Ethics
+NOAA operates different from a traditional company as they are government owned, meaning they give their data away vs some of the other aforementioned companies. weather is an important part of day to day activities for any one person. It impacts everyone. Making sure their is proper funding to support publicly available data in underrepresented communities and lower-income areas is imperative. This data should not flex to incomes, or skin color. It's numbers that can help save people and give everyone a chance to prepare for the day.
+
+## Attributes Used in This Analysis
+
+
+
+# Snowfall Comparison
+
+
+
+# Temperature Distribution by Season
+
+
+
+# Monthly Precipitation Trends 
+
+
+
+# Discussion
+
+We don't technically need a dedicated section for this, we just need a larger narrative that connects our insights and explains the overall data story (Line 72 of the Project Guidelines File). The alternative would be writing a paragraph or two after the analysis of our final figure.
+
+
+
+# Author Contributions
+
+
+
+# References
+
+
+
+# Code Appendix
+
+>>>>>>> Stashed changes
 
 Responsibility
 NOAA holds complete control over the accuracy of the data. In the grand scheme of things, being off by one degree on the temperature for one day seems like an insignificant difference overall, however when we have constantly advancing technology to track data, we want to assume that the data is being properly collected. It's also imperative when we are studying something serious like the possibility of a natural disaster occuring. Now their is little we can do against a Category 5 Hurricane or extreme flooding in a short period of time, however we can be prepared for it. If the data is misread or collected poorly and we underestimate how strong a storm ends up being, than NOAA would have to take responsibility for misreporting the data and underpreparing the community.
