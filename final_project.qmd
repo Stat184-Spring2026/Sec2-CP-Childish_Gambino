@@ -19,7 +19,7 @@ execute:
 #| label: setup
 #| include: false
 # Author:   Evan Grebner
-# Reviewer: [TBD]
+# Reviewer: Ralph Halabi
 # Purpose:  Load the required packages for the report.
 
 # Style: All code in this document uses the Tidyverse Style Guide
@@ -39,11 +39,62 @@ library(kableExtra)
 ```{r}
 #| label: data-wrangling
 #| include: false
-# Author:   
-# Reviewer:
-# Purpose:  
+# Author: Evan Grebner  
+# Reviewers: Ralph Halabi, Quinn Hughes
+# Purpose: Build the initial wrangled data frame, containing both cities data and the variables used for analysis, used by all plot and table code chunks in this report
 
+# 1. File paths for the two stations csv data
+state_college_path <- "state_college_weather.csv"
+philadelphia_path  <- "philadelphia_weather.csv"
+
+# 2. Read the files and mark the locations 
+state_college <- read_csv(file = state_college_path) |>
+  mutate(location = "State College")
+
+philadelphia <- read_csv(file = philadelphia_path) |>
+  mutate(location = "Philadelphia")
+
+# 3. Combine the two datasets, rename and create variables, fill NAs, and filter to create a dataset containing all values needed for analysis
+weather_combined <- bind_rows(
+  
+  state_college |> select(location, DATE, PRCP, SNOW, SNWD, TMAX, TMIN, TOBS),
+  
+  philadelphia |> select(location, DATE, PRCP, SNOW, SNWD, TMAX, TMIN, TOBS)
+  
+) |>
+  rename(
+    date = DATE,
+    tmax = TMAX,
+    tmin = TMIN,
+    tobs = TOBS,
+    precipitation = PRCP,
+    snowfall = SNOW,
+    snow_depth = SNWD
+    
+  ) |>
+  mutate(
+    date = ymd(date),
+    year = year(date),
+    month_num = month(date),
+    # for seasonal analysis
+    season = case_when(
+      month_num %in% c(12, 1, 2) ~ "Winter",
+      month_num %in% c(3, 4, 5) ~ "Spring",
+      month_num %in% c(6, 7, 8) ~ "Summer",
+      month_num %in% c(9, 10, 11) ~ "Fall"
+    ),
+    # for analyzing by the decade
+    decade = case_when(
+      year >= 2006 & year <= 2015 ~ "06-15",
+      year >= 2016 & year <= 2025 ~ "16-25"
+    ),
+    avg_temp = (tmax + tmin) / 2, 
+    snowfall = replace_na(snowfall, 0),
+    precipitation = replace_na(precipitation, 0)
+  ) |>
+  filter(year >= 2006, year <= 2025)
 ```
+
 
 # Introduction
 
@@ -54,3 +105,48 @@ This report will explore that question using the last two decades of daily weath
 Our work follows the Exploratory Data Analysis approach, focusing mainly on what the data actually reveals rather than trying to prove a specific point. We narrowed our analysis down to three main angles: how precipitation totals compare month by month, how temperature is distributed across the four seasons, and how each city's annual snowfall compares. Together, these angles paint a picture of two cities that are close in proximity but experience noticeably different climates.
 
 The remainder of this report describes the data we used and its provenance, takes a closer look at each of our angles of comparison, and concludes with a discussion of the patterns we noticed through this analysis.
+
+
+
+# Data
+
+## Data Provenance
+
+
+## FAIR and CARE Principles
+
+
+## Attributes Used in This Analysis
+
+
+
+# Snowfall Comparison
+
+
+
+# Temperature Distribution by Season
+
+
+
+# Monthly Precipitation Trends 
+
+
+
+# Discussion
+
+We don't technically need a dedicated section for this, we just need a larger narrative that connects our insights and explains the overall data story (Line 72 of the Project Guidelines File). The alternative would be writing a paragraph or two after the analysis of our final figure.
+
+
+
+# Author Contributions
+
+
+
+# References
+
+
+
+# Code Appendix
+
+
+
