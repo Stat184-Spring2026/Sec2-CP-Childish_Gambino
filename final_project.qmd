@@ -665,7 +665,7 @@ Quinn
 
 
 # References
-
+National Centers for Environmental Information. (2025). Custom GHCN-Daily CSV [Data set]. National Oceanic and Atmospheric Administration. https://www.ncei.noaa.gov/cdo-web/datasets#GHCND
 
 
 # Code Appendix
