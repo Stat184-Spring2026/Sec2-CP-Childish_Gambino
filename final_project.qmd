@@ -106,6 +106,13 @@ Our work follows the Exploratory Data Analysis approach, focusing mainly on what
 
 The remainder of this report describes the data we used and its provenance, takes a closer look at each of our angles of comparison, and concludes with a discussion of the patterns we noticed through this analysis.
 
+For this project, we are using a tidyverse data analysis perspective and a exploratory analysis perspective.
+
+## Paradigm and perspective
+For the coding work, we use the tidyverse paradigm because the data is being cleaned, organized, summarized, and visualized step by step. Functions like mutate(), select(), group_by(), summarize(), and ggplot() allowed us to take the raw NOAA weather data and turn it into readable tables and plots. This approach is useful because each step builds logically on the previous one, making the code easier to follow and explain.
+
+For the data analysis, we use a exploratory perspective because our goal is to explore NOAA temperature data and identify patterns instead of testing one formal hypothesis. By summarizing temperatures by season and decade and creating visualizations, we can compare Philadelphia and State College and look for possible differences in temperature patterns over time. EDA is useful for this project because it helps reveal trends, seasonal changes, and location-based differences in the data.
+
 
 # FAIR and CARE Principles
 FAIR
@@ -158,6 +165,12 @@ Ethics
 # Data
 
 ## Data Provenance
+
+The data for this project comes from NOAA, the National Oceanic and Atmospheric Administration. NOAA collects daily weather data from weather stations across the United States, including stations near Philadelphia and State College. These stations record lots of information such as daily high temperature, low temperature, observed temperature, precipitation, snowfall, and snow depth.
+
+For this project, we use two NOAA datasets: one for Philadelphia and one for State College. Each dataset contains daily weather observations from 2006 to 2025. We focus mostly on temperature variables, especially daily maximum temperature, minimum temperature, and average temperature. The data was originally collected to track local weather conditions and build long-term climate records.
+
+We use this data to compare temperature patterns between Philadelphia and State College. Because both datasets come from NOAA and include the same types of measurements, they can be compared by season and by 10-year period.
 
 
 ## FAIR and CARE Principles
@@ -349,7 +362,264 @@ The values in @tbl-snowfall-summary support the trends that were displayed in @f
 
 
 # Temperature Distribution by Season
+## Introduction to temperature
 
+
+
+# Temperature Insights
+
+This section explores the temperature data for Philadelphia and State College. The data includes daily maximum, minimum, and observed temperatures. We are trying to find out how temperature patterns compare between the two locations, how those patterns vary across the four seasons, and how the trends have changed or stayed the same over the last 20 years. This will be shown through a table and plots. 
+
+```{r}
+#Code chunk to wrangle the raw data
+# wrangle and sort by season, 10 year chunk, and average temps 
+philadelphia_weather <- read_csv("C:\\Users\\quinn\\OneDrive - The Pennsylvania State University\\Yr2\\Stat184\\GitHub\\Sec2-CP-Childish_Gambino\\PhillyData.csv") |>
+  mutate(
+    date = as.Date(DATE),
+    year = as.numeric(format(date, "%Y")),
+    month_num = as.numeric(format(date, "%m")),
+    tmax = as.numeric(TMAX),
+    tmin = as.numeric(TMIN),
+    tobs = as.numeric(TOBS),
+    avg_temp = (tmax + tmin) / 2,
+    season = case_when(
+      month_num %in% c(12, 1, 2) ~ "Winter",
+      month_num %in% c(3, 4, 5) ~ "Spring",
+      month_num %in% c(6, 7, 8) ~ "Summer",
+      month_num %in% c(9, 10, 11) ~ "Fall"
+    ),
+    decade = case_when(
+      year >= 2006 & year <= 2015 ~ "06-15",
+      year >= 2016 & year <= 2025 ~ "16-25",
+      TRUE ~ "Other"
+    )
+  ) |>
+  select(date, year, month_num, season, decade, tmax, tmin, tobs, avg_temp)
+
+
+state_college_weather <- read_csv("C:\\Users\\quinn\\OneDrive - The Pennsylvania State University\\Yr2\\Stat184\\GitHub\\Sec2-CP-Childish_Gambino\\StateCollegeData.csv") |>
+  mutate(
+    date = as.Date(DATE),
+    year = as.numeric(format(date, "%Y")),
+    month_num = as.numeric(format(date, "%m")),
+    tmax = as.numeric(TMAX),
+    tmin = as.numeric(TMIN),
+    tobs = as.numeric(TOBS),
+    avg_temp = (tmax + tmin) / 2,
+    season = case_when(
+      month_num %in% c(12, 1, 2) ~ "Winter",
+      month_num %in% c(3, 4, 5) ~ "Spring",
+      month_num %in% c(6, 7, 8) ~ "Summer",
+      month_num %in% c(9, 10, 11) ~ "Fall"
+    ),
+    decade = case_when(
+      year >= 2006 & year <= 2015 ~ "06-15",
+      year >= 2016 & year <= 2025 ~ "16-25",
+      TRUE ~ "Other"
+    )
+  ) |>
+  select(date, year, month_num, season, decade, tmax, tmin, tobs, avg_temp)
+```
+
+```{r}
+#make the tables
+philadelphia_table <- philadelphia_weather |>
+  filter(decade != "Other") |>
+  group_by(decade, season) |>
+  summarize(
+    average_high = round(mean(tmax, na.rm = TRUE), 1),
+    average_low = round(mean(tmin, na.rm = TRUE), 1),
+    average_temp = round(mean(avg_temp, na.rm = TRUE), 1),
+    hottest_day = max(tmax, na.rm = TRUE),
+    coldest_day = min(tmin, na.rm = TRUE),
+    days_recorded = n(),
+    .groups = "drop"
+  ) |>
+  arrange(decade, factor(season, levels = c("Winter", "Spring", "Summer", "Fall")))
+
+
+
+state_college_table <- state_college_weather |>
+  filter(decade != "Other") |>
+  group_by(decade, season) |>
+  summarize(
+    average_high = round(mean(tmax, na.rm = TRUE), 1),
+    average_low = round(mean(tmin, na.rm = TRUE), 1),
+    average_temp = round(mean(avg_temp, na.rm = TRUE), 1),
+    hottest_day = max(tmax, na.rm = TRUE),
+    coldest_day = min(tmin, na.rm = TRUE),
+    days_recorded = n(),
+    .groups = "drop"
+  ) |>
+  arrange(decade, factor(season, levels = c("Winter", "Spring", "Summer", "Fall")))
+
+
+
+```
+
+```{r}
+#Format the tables so that they are professional 
+#Philadelphia table 
+kable(
+  philadelphia_table,
+  caption = "Philadelphia Temperature Summary by Season and 10-Year Period",
+  col.names = c(
+    "Decade",
+    "Season",
+    "Avg High",
+    "Avg Low",
+    "Avg Temp",
+    "Hottest",
+    "Coldest",
+    "Days"
+  ),
+  align = "c"
+) |>
+  kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed"),
+    full_width = FALSE,
+    position = "center"
+  ) |>
+  row_spec(0, bold = TRUE, color = "white", background = "#1F4E79") |>
+  column_spec(1, bold = TRUE) |>
+  pack_rows("06-15", 1, 4) |>
+  pack_rows("16-25", 5, 8)
+```
+## Philadelphia table interpretation
+This table showcases the four seasons and data about them for both decades in degrees Fahrenheit. Notable figures are the high of 103 in the first decade and low of -2 also in the first decade. As well as, average temperatures spanning from 25.2 to 74.8. 
+
+{{< pagebreak >}}
+```{r}
+#State college table
+kable(
+  state_college_table,
+  caption = "State College Temperature Summary by Season and 10-Year Period",
+  col.names = c(
+    "Decade",
+    "Season",
+    "Avg High",
+    "Avg Low",
+    "Avg Temp",
+    "Hottest",
+    "Coldest",
+    "Days"
+  ),
+  align = "c"
+) |>
+  kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed"),
+    full_width = FALSE,
+    position = "center"
+  ) |>
+  row_spec(0, bold = TRUE, color = "white", background = "#7A2E2E") |>
+  column_spec(1, bold = TRUE) |>
+  pack_rows("06-15", 1, 4) |>
+  pack_rows("16-25", 5, 8)
+
+
+
+```
+## State College table interpretation
+This table showcases the four seasons and temperature data for State College across both decades in degrees Fahrenheit. Notable figures include the highest recorded temperature of 101°F during summer in the first decade and the lowest recorded temperature of -9°F during winter in the first decade. The average temperatures range from 29.5°F in winter during 2006-2015 to 71.6°F in summer during 2016-2025. 
+
+
+# Plot
+
+```{r}
+#Making the plot 
+# Group by month
+philadelphia_monthly <- philadelphia_weather |>
+  mutate(month = as.Date(format(date, "%Y-%m-01"))) |>
+  group_by(month) |>
+  summarize(
+    average_temp = mean(avg_temp, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  mutate(place = "Philadelphia")
+
+state_college_monthly <- state_college_weather |>
+  mutate(month = as.Date(format(date, "%Y-%m-01"))) |>
+  group_by(month) |>
+  summarize(
+    average_temp = mean(avg_temp, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  mutate(place = "State College")
+
+#Bind to make one table
+combined_weather <- bind_rows(
+  philadelphia_weather |> mutate(place = "Philadelphia"),
+  state_college_weather |> mutate(place = "State College")
+)
+```
+
+```{r}
+#| fig-cap: "Temperature distribution by season for Philadelphia and State College"
+#| fig-alt: "Boxplot comparing average daily temperatures by season for Philadelphia and State College. Each season has two boxes, one for each location, showing the spread and median temperature values."
+
+#Plot 
+ggplot(combined_weather, aes(x = season, y = avg_temp, fill = place)) +
+  geom_boxplot() +
+  labs(
+    title = "Temperature Distribution by Season",
+    subtitle = "Philadelphia generally has warmer temperatures than State College",
+    x = "Season",
+    y = "Average daily temperature (F)",
+    fill = "Place"
+  ) +
+  theme_minimal()
+
+```
+
+## Analysis
+Comparing the Philadelphia and State College tables and plot shows that Philadelphia is consistently warmer across every season and both 10-year periods. Philadelphia’s average winter temperatures were 33.9°F from 2006-2015 and 35.0°F from 2016-2025, while State College’s were lower at 29.5°F and 31.5°F. The same pattern appears in summer, where Philadelphia averaged 74.2°F and 74.8°F, compared to State College’s 70.8°F and 71.6°F. Both locations show a slight increase in average temperatures from the first decade to the second, especially in winter and summer, suggesting a small warming trend over time. Philadelphia also had the highest recorded temperature overall at 103°F, while State College reached 101°F. However, State College had the colder extreme, dropping to -9°F, compared to Philadelphia’s lowest temperature of -2°F. Overall, the tables suggest that Philadelphia has a warmer and slightly milder climate, while State College experiences colder winter conditions and a wider range of cold extremes. This could be credited to State College's higher elevation and distance from the coast. 
+
+```{r}
+#Slope plot
+philadelphia_slope <- philadelphia_table |>
+  select(decade, season, average_temp) |>
+  mutate(place = "Philadelphia")
+
+state_college_slope <- state_college_table |>
+  select(decade, season, average_temp) |>
+  mutate(place = "State College")
+
+combined_slope <- bind_rows(philadelphia_slope, state_college_slope) |>
+  mutate(
+    decade = factor(decade, levels = c("06-15", "16-25")),
+    season = factor(season, levels = c("Winter", "Spring", "Summer", "Fall"))
+  )
+```
+
+```{r}
+#| fig-cap: "Change in average temperature between decades by season and location"
+#| fig-alt: "Slope chart showing average seasonal temperatures for Philadelphia and State College across two decades. Each panel represents one season, with lines connecting average temperatures from 2006 to 2015 and 2016 to 2025."
+
+ggplot(
+  combined_slope,
+  aes(x = decade, y = average_temp, group = interaction(place, season), color = place)
+) +
+  geom_line(linewidth = 1) +
+  geom_point(size = 3) +
+  facet_wrap(~ season, scales = "free_y") +
+  labs(
+    title = "Change in Average Temperature by Season and Location",
+    subtitle = "Average temperatures compared between 2006-2015 and 2016-2025",
+    x = "10-Year Period",
+    y = "Average Temperature (F)",
+    color = "Location"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(face = "bold"),
+    legend.position = "bottom"
+  )
+
+
+```
+
+## Overall Trend
+We can also see clearly from this plot that, while the changes are not massive, temperatures are rising in all four seasons and in both places. The slopes for all eight lines are very similar signifying that the temperature changes are at the least a regional trend. This could be caused by global warming or climate change.
 
 
 # Monthly Precipitation Trends 
@@ -376,6 +646,10 @@ We don't technically need a dedicated section for this, we just need a larger na
 
 # Author Contributions
 
+Quinn
+- Paradigm/perspective 
+- Data Provence 
+- Temperature plots and insight
 
 
 # References
