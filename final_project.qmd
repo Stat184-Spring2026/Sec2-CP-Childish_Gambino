@@ -18,9 +18,9 @@ execute:
 ```{r}
 #| label: setup
 #| include: false
-# Author:   Evan Grebner
+# Author: Evan Grebner
 # Reviewer: Ralph Halabi
-# Purpose:  Load the required packages for the report.
+# Purpose: Load the required packages for the report.
 
 # Style: All code in this document uses the Tidyverse Style Guide
 
@@ -42,6 +42,7 @@ library(kableExtra)
 # Author: Evan Grebner  
 # Reviewers: Ralph Halabi, Quinn Hughes
 # Purpose: Build the initial wrangled data frame, containing both cities data and the variables used for analysis, used by all plot and table code chunks in this report
+
 
 # 1. File paths for the two stations csv data
 state_college_path <- "state_college_weather.csv"
@@ -95,17 +96,16 @@ weather_combined <- bind_rows(
   filter(year >= 2006, year <= 2025)
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
-
 # Introduction
 
-Weather influences a surprising number of everyday decisions, whether it's what to wear, planning events, or even what you make for dinner. Yet most people rarely look further than the next day's forecast. Two cities can be only a couple hundred miles apart in the same state and still feel like completely different climates to someone who has been to both. State College and Philadelphia are a great example of this. State College sits inland in the Appalachian foothills with an elevation of approximately 1,200 feet, while Philadelphia lies on the eastern coastal plain near sea level. Their geographic separation, along with the difference in elevation, raises a natural question: how different is the weather that these two cities actually experience?
+Weather influences a surprising number of everyday decisions, whether it's what to wear, planning events, or even what you make for dinner. Yet most people rarely look further than the next day's forecast. Two cities can be only a couple hundred miles apart in the same state and still feel like completely different climates to someone who has been to both. State College and Philadelphia are a great example of this. State College sits inland in the Appalachian foothills with an elevation of approximately 1,200 feet, while Philadelphia lies on the eastern coastal plain near sea level. Their geographic separation, along with the difference in elevation, raises a question: how different is the weather that these two cities actually experience?
 
-This report will explore that question using the last two decades of daily weather records collected by the National Oceanic and Atmospheric Administration. There are over 7,000 daily observations for both cities, providing us with enough data to look at long-term weather trends and how their climates compare.
+This report will explore that question using the last two decades of daily weather records collected by the National Oceanic and Atmospheric Administration. There are over 7,000 daily observations for both cities, providing us with enough data to look at long-term weather trends and how their climates compare over the years.
 
 Our work follows the Exploratory Data Analysis approach, focusing mainly on what the data actually reveals rather than trying to prove a specific point. We narrowed our analysis down to three main angles: how precipitation totals compare month by month, how temperature is distributed across the four seasons, and how each city's annual snowfall compares. Together, these angles paint a picture of two cities that are close in proximity but experience noticeably different climates.
 
 The remainder of this report describes the data we used and its provenance, takes a closer look at each of our angles of comparison, and concludes with a discussion of the patterns we noticed through this analysis.
+
 
 # FAIR and CARE Principles
 FAIR
@@ -192,6 +192,159 @@ NOAA operates different from a traditional company as they are government owned,
 
 
 # Snowfall Comparison
+
+Annual snowfall is one of the more visible differences you can see between the two cities, since both elevation and proximity to the coast affect how much snow a location gets every year. @fig-yearly-snowfall compares the yearly totals for both stations over the last two decades.
+
+```{r}
+#| label: fig-yearly-snowfall
+#| fig-cap: "Annual snowfall totals for State College and Philadelphia, 2006-2025"
+#| fig-alt: "Grouped bar chart comparing annual snowfall at State College (navy) and Philadelphia (orange) from 2006 to 2025. State College's bars are taller in 16 of 20 years, while Philadelphia shows wider year by year variability."
+#| fig-align: center
+#| out-width: "85%"
+#| fig-pos: "H"
+
+# Author: Evan Grebner
+# Reviewer: [TBD]
+# Purpose: Create a grouped bar chart with yearly snowfall totals for both cities,with the mean annual snowfall shown in the caption for more information
+
+# 1. Get Yearly totals for both locations
+yearly_totals <- weather_combined |>
+  group_by(location, year) |>
+  summarize(
+    total_snowfall = sum(snowfall, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  arrange(year)
+
+# 2. Compute the means for both cities for the caption
+state_mean <- mean(
+  yearly_totals$total_snowfall[yearly_totals$location == "State College"]
+)
+philadelphia_mean <- mean(
+yearly_totals$total_snowfall[yearly_totals$location == "Philadelphia"]
+)
+
+# caption text for the plot
+caption_text <- paste0(
+  "Mean annual snowfall: State College = ", round(state_mean, 2),
+  " in   |   Philadelphia = ", round(philadelphia_mean, 2), " in\n",
+  "Source: NOAA GHCN-Daily, stations: USC00368449, USC00286964."
+)
+
+# 3. Build the grouped bar chart 
+
+# Set the framework of the plot
+ggplot(
+  data = yearly_totals,
+  mapping = aes(x = factor(year), y = total_snowfall, fill = location)
+  # factor(year) to convert year from numerical to categories for the chart
+) +
+  geom_col(
+    position = position_dodge(width = 0.8),  # side by side columns
+    width = 0.7,   # set the size of the individual bars
+    color = "black",   # The color for the outline of the bars
+    linewidth = 0.2   # width of outline
+  ) +
+  
+  # Include the number above each bar for easier visualizations
+  geom_text(
+    mapping = aes(label = round(total_snowfall, 0)),   # round for no decimals
+    position = position_dodge(width = 0.8),   # match the dodge so values align
+    vjust = -0.3,   # height above the bar
+    size = 2.1   # text size
+  ) +
+  # assigning the colors to each bar
+  scale_fill_manual(values = c(
+    "State College" = "#1F4E79",
+    "Philadelphia" = "#D55E00"
+  )) +
+  labs(
+    title = "Annual Snowfall: State College vs. Philadelphia",
+    x = "Year",
+    y = "Total Snowfall (inches)",
+    fill = "Location",     # key for plot 
+    caption = caption_text
+  ) +
+  theme_bw(base_size = 11) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),   #rotate each year to fit properly
+    legend.position = "top",
+    plot.title = element_text(face = "bold"),   # bold Title
+    plot.caption = element_text(hjust = 0.5, size = 9)   # align caption to center and set font size
+  )
+
+```
+
+
+
+This figure shows twenty grouped bar pairs, with one pair for each year between 2006 and 2025. In each pair, the navy bar shows State College’s total snowfall for that year, and the orange bar shows the same total for Philadelphia. Each bar’s height is the year’s total snowfall in inches, and the value printed above gives the exact total. 
+One of the first patterns @fig-yearly-snowfall reveals is that State College almost always sees a higher annual snowfall total than Philadelphia. State College’s bar is taller than Philadelphia’s in all but 4 years over this twenty-year span, and its average annual total is nearly 10 inches higher than Philadelphia’s over that same period. This chart also reveals that Philadelphia has a much higher variance between the years than State College. Philadelphia experienced several years of single-digit snowfall, but in 2010 saw roughly three times its average annual total.  
+
+Together, these patterns suggest that both elevation and inland geography influence how much snow a city sees over the course of a winter. State College sits at a significantly higher elevation in the higher Appalachian terrain, which seems to give it consistently more snow than Philadelphia’s lower coastal plain location. A lot of Philadelphia’s variability is shaped by nor’easters. These coastal storms can bring huge amounts of snow if lined up correctly but can also miss the city completely.  
+
+
+While @fig-yearly-snowfall shows the year-by-year totals for each city, @tbl-snowfall-summary shows that same twenty year window as a table of each city's summary statistics, including measures of variability, and the number of snow days at each station.
+
+```{r}
+#| label: tbl-snowfall-summary
+
+# Author:   Evan Grebner
+# Reviewer: [TBD]
+# Purpose: Create a summary statistics table with annual snowfall total statistics and frequency statistics for both cities.
+
+
+# 1. Compute the yearly totals and the snow day counts for both cities per year
+yearly_totals <- weather_combined |>
+  group_by(location, year) |>
+  summarize(
+    total_snowfall = sum(snowfall, na.rm = TRUE), # total inches of snow in a year
+    snow_days = sum(snowfall > 0, na.rm = TRUE), # number of days with measurable snow
+    .groups = "drop"
+  )
+
+# 2. Compute the annual summary statistics for each city
+summary_stats <- yearly_totals |>
+  group_by(location) |>
+  summarize(
+    mean_annual = round(mean(total_snowfall), 1),
+    max_year = round(max(total_snowfall), 1),
+    min_year = round(min(total_snowfall), 1),
+    std_dev = round(sd(total_snowfall), 1),
+    avg_snow_days_per_yr = round(mean(snow_days), 1),
+    avg_in_per_snow_day = round(sum(total_snowfall) / sum(snow_days), 2),
+    .groups = "drop"
+  ) |>
+  rename(city = location)
+
+# 3. Create the final formatted table to be rendered
+summary_stats |>
+  kable(
+    caption = paste(
+      "Annual snowfall summary statistics for State College and Philadelphia,",
+      "2006-2025."
+    ),
+    # Set all the Column Names
+    col.names = c(
+      "City",
+      "Mean(in)",
+      "Snowiest Year(in)",
+      "Lowest Year(in)",
+      "Std Dev",
+      "Snow Days/Year",
+      "Inches/Snow Day"
+    ),
+    align = "lccccccc"
+  ) |>
+  kable_styling(
+    latex_options = c("striped", "hold_position"),   # for PDF rendering
+    full_width = FALSE,
+    position = "center",
+    font_size = 8
+    
+  )
+```
+
+The values in @tbl-snowfall-summary support the trends that were displayed in @fig-yearly-snowfall while also providing more details and concrete numbers for analysis. In the grouped bar chart you could see that Philadelphia had more variability between years. With this table you can now see the exact measure of variability for both cities, with Philadelphia having roughly a 50% higher standard deviation. The most insightful portion of the table is the specific snow day statistics. State College has over double the snow days every year, but Philadelphia averages nearly twice as much total snowfall for each day it does snow. At first these two statistics might feel like they contradict each other, but they actually fully support the patterns shown by the plot. Philadelphia consistently has lower snowfall frequency, but when the nor'easter storms do happen to line up with the city, they bring huge amounts of snow down at one time. State College's location and higher elevation leads to more consistent snowfall throughout the year, and shows that its higher average comes from how frequently it snows there.
 
 
 
