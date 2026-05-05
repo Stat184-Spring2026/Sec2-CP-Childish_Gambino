@@ -370,10 +370,16 @@ The values in @tbl-snowfall-summary support the trends that were displayed in @f
 
 This section explores the temperature data for Philadelphia and State College. The data includes daily maximum, minimum, and observed temperatures. We are trying to find out how temperature patterns compare between the two locations, how those patterns vary across the four seasons, and how the trends have changed or stayed the same over the last 20 years. This will be shown through a table and plots. 
 
+
+
+
+
+
+
 ```{r}
 #Code chunk to wrangle the raw data
 # wrangle and sort by season, 10 year chunk, and average temps 
-philadelphia_weather <- read_csv("C:\\Users\\quinn\\OneDrive - The Pennsylvania State University\\Yr2\\Stat184\\GitHub\\Sec2-CP-Childish_Gambino\\PhillyData.csv") |>
+philadelphia_weather <- philadelphia |>
   mutate(
     date = as.Date(DATE),
     year = as.numeric(format(date, "%Y")),
@@ -397,7 +403,7 @@ philadelphia_weather <- read_csv("C:\\Users\\quinn\\OneDrive - The Pennsylvania 
   select(date, year, month_num, season, decade, tmax, tmin, tobs, avg_temp)
 
 
-state_college_weather <- read_csv("C:\\Users\\quinn\\OneDrive - The Pennsylvania State University\\Yr2\\Stat184\\GitHub\\Sec2-CP-Childish_Gambino\\StateCollegeData.csv") |>
+state_college_weather <- state_college |>
   mutate(
     date = as.Date(DATE),
     year = as.numeric(format(date, "%Y")),
