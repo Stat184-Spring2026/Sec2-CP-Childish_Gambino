@@ -3,7 +3,7 @@ title: "Comparing Weather Trends in State College and Philadelphia, 2006-2025"
 author:
   - "Evan Grebner"
   - "Quinn Hughes"
-  - "Ralph Halabi"
+  - "Raouf Halabi"
 date: today
 format:
   pdf:
@@ -19,7 +19,7 @@ execute:
 #| label: setup
 #| include: false
 # Author: Evan Grebner
-# Reviewer: Ralph Halabi
+# Reviewer: Raouf Halabi
 # Purpose: Load the required packages for the report.
 
 # Style: All code in this document uses the Tidyverse Style Guide
@@ -97,7 +97,6 @@ weather_combined <- bind_rows(
 ```
 
 # Introduction
-
 Weather influences a surprising number of everyday decisions, whether it's what to wear, planning events, or even what you make for dinner. Yet most people rarely look further than the next day's forecast. Two cities can be only a couple hundred miles apart in the same state and still feel like completely different climates to someone who has been to both. State College and Philadelphia are a great example of this. State College sits inland in the Appalachian foothills with an elevation of approximately 1,200 feet, while Philadelphia lies on the eastern coastal plain near sea level. Their geographic separation, along with the difference in elevation, raises a question: how different is the weather that these two cities actually experience?
 
 This report will explore that question using the last two decades of daily weather records collected by the National Oceanic and Atmospheric Administration. There are over 7,000 daily observations for both cities, providing us with enough data to look at long-term weather trends and how their climates compare over the years.
@@ -144,7 +143,6 @@ NOAA operates different from a traditional company as they are government owned,
 
 
 # Data Provenance
-
 The data for this project comes from NOAA, the National Oceanic and Atmospheric Administration. NOAA collects daily weather data from weather stations across the United States, including stations near Philadelphia and State College. These stations record lots of information such as daily high temperature, low temperature, observed temperature, precipitation, snowfall, and snow depth.
 
 For this project, we use two NOAA datasets: one for Philadelphia and one for State College. Each dataset contains daily weather observations from 2006 to 2025. We focus mostly on temperature variables, especially daily maximum temperature, minimum temperature, and average temperature. The data was originally collected to track local weather conditions and build long-term climate records.
@@ -153,7 +151,6 @@ We use this data to compare temperature patterns between Philadelphia and State 
 
 
 # Snowfall Comparison
-
 Annual snowfall is one of the more visible differences you can see between the two cities, since both elevation and proximity to the coast affect how much snow a location gets every year. @fig-yearly-snowfall compares the yearly totals for both stations over the last two decades.
 
 ```{r}
@@ -236,8 +233,6 @@ ggplot(
 
 ```
 
-
-
 This figure shows twenty grouped bar pairs, with one pair for each year between 2006 and 2025. In each pair, the navy bar shows State College’s total snowfall for that year, and the orange bar shows the same total for Philadelphia. Each bar’s height is the year’s total snowfall in inches, and the value printed above gives the exact total. 
 One of the first patterns @fig-yearly-snowfall reveals is that State College almost always sees a higher annual snowfall total than Philadelphia. State College’s bar is taller than Philadelphia’s in all but 4 years over this twenty-year span, and its average annual total is nearly 10 inches higher than Philadelphia’s over that same period. This chart also reveals that Philadelphia has a much higher variance between the years than State College. Philadelphia experienced several years of single-digit snowfall, but in 2010 saw roughly three times its average annual total.  
 
@@ -308,20 +303,12 @@ summary_stats |>
 The values in @tbl-snowfall-summary support the trends that were displayed in @fig-yearly-snowfall while also providing more details and concrete numbers for analysis. In the grouped bar chart you could see that Philadelphia had more variability between years. With this table you can now see the exact measure of variability for both cities, with Philadelphia having roughly a 50% higher standard deviation. The most insightful portion of the table is the specific snow day statistics. State College has over double the snow days every year, but Philadelphia averages nearly twice as much total snowfall for each day it does snow. At first these two statistics might feel like they contradict each other, but they actually fully support the patterns shown by the plot. Philadelphia consistently has lower snowfall frequency, but when the nor'easter storms do happen to line up with the city, they bring huge amounts of snow down at one time. State College's location and higher elevation leads to more consistent snowfall throughout the year, and shows that its higher average comes from how frequently it snows there.
 
 
-
 # Temperature Distribution by Season
-## Introduction to temperature
-
+## Introduction to Temperature
 
 
 # Temperature Insights
-
 This section explores the temperature data for Philadelphia and State College. The data includes daily maximum, minimum, and observed temperatures. We are trying to find out how temperature patterns compare between the two locations, how those patterns vary across the four seasons, and how the trends have changed or stayed the same over the last 20 years. This will be shown through a table and plots. 
-
-
-
-
-
 
 
 ```{r}
@@ -439,7 +426,8 @@ kable(
   pack_rows("06-15", 1, 4) |>
   pack_rows("16-25", 5, 8)
 ```
-## Philadelphia table interpretation
+
+## Philadelphia Table Interpretation
 This table showcases the four seasons and data about them for both decades in degrees Fahrenheit. Notable figures are the high of 103 in the first decade and low of -2 also in the first decade. As well as, average temperatures spanning from 25.2 to 74.8. 
 
 {{< pagebreak >}}
@@ -473,12 +461,12 @@ kable(
 
 
 ```
+
 ## State College table interpretation
 This table showcases the four seasons and temperature data for State College across both decades in degrees Fahrenheit. Notable figures include the highest recorded temperature of 101°F during summer in the first decade and the lowest recorded temperature of -9°F during winter in the first decade. The average temperatures range from 29.5°F in winter during 2006-2015 to 71.6°F in summer during 2016-2025. 
 
 
 # Plot
-
 ```{r}
 #Making the plot 
 # Group by month
@@ -576,7 +564,11 @@ ggplot(
 We can also see clearly from this plot that, while the changes are not massive, temperatures are rising in all four seasons and in both places. The slopes for all eight lines are very similar signifying that the temperature changes are at the least a regional trend. This could be caused by global warming or climate change.
 
 
-# Monthly Precipitation Trends 
+# Monthly Precipitation Trends
+
+This section compares the precipitation levels over a span of 20 years using NOAA datasets, focusing on the trends in Philadelphia and State College, Pennsylvania.
+
+The visualization presents monthly precipitation totals for each city, with individual monthly observations shown as grey lines and the average trend line is blue. This approach allows the reader to see the variability per season as well as the long term changes in precipitation in both areas. The table also discusses basic metrics comparing the two cities precipitation levels.
 
 ```{r}
 # Author: Raouf Halabi
@@ -586,6 +578,10 @@ We can also see clearly from this plot that, while the changes are not massive, 
 # Style: All code in this document uses the Tidyverse Style Guide
 
 # Build monthly precipitation totals from the shared weather_combined data frame
+
+# NOTE: Wrangling code was used above earlier and am pulling from that.
+
+# Combined the weather data from State College and Philadelphia to compare the two
 weather_monthly <- weather_combined |>
   mutate(month = as.Date(format(date, "%Y-%m-01"))) |>
   group_by(location, month) |>
@@ -595,7 +591,7 @@ weather_monthly <- weather_combined |>
   ) |>
   rename(City = location)
 
-# RAIN TABLE
+# Rain Table
 rain_table <- weather_monthly |>
   group_by(City) |>
   summarise(
@@ -609,6 +605,7 @@ rain_table <- weather_monthly |>
     .groups = "drop"
   )
 
+# Styling for rain table
 knitr::kable(
   rain_table,
   caption = "Monthly Precipitation Summary (in inches)",
@@ -641,28 +638,28 @@ ggplot(weather_monthly, aes(x = month, y = total_precipitation)) +
   )
 ```
 
-# Narrative Text
-This section compares the precipitation levels over a span of 20 years using NOAA datasets, focusing on the trends in Philadelphia and State College, Pennsylvania.
-
-The visualization presents monthly precipitation totals for each city, with individual monthly observations shown as grey lines and the average trend line is blue. This approach allows the reader to see the variability per season as well as the long term changes in precipitation in both areas.
-
 From the chart, both locations exhibit noticeable variability in monthly precipitation, with occasional spikes due to the changing seasons. We did notice a spike in rainfall in August 2011, more in Philadelphia than State College, but still a noticeable spike, but this was due to a couple of factors. The first major weather factor was Tropical Storm Lee, a slow moving storm that sat in one location dumping a lot of rain on already saturated ground and flooding the area. That happened in the beginning of August while Hurricane Irene showed up later in the month of August. A Category 1 storm, still brought substantial rainfall and giving little break for recovery between both larger systems. A low pressure system was also in place, pushing the storms out towards the Atlantic Ocean, which explains why the storms sat in Philadelphia longer than in State College. All of this being unfortunate timing combined for these historic rainfall conditions. Despite this one blip in the chart, the overall trends for both cities remain relatively similar despite their difference in elevation, which we belived would have an impact on the amount of rainfall between the cities.
 
-Overall, the analysis demonstrates that while precipitation in Philadelphia and State College are broadly consistent over time, with both cities experiencing similar seasonal variability and long-term stability. Extreme events are outliers in this chart. Despite the geographic differences, both locations are generally similar and stable implying that regional weather systems have a stronger influence than just terrain, elevation, etc. This comparison provides a clear view of how precipitation behaves in the Mid-Atlantic region.
+Overall, the analysis demonstrates that while precipitation in Philadelphia and State College are broadly consistent over time, with both cities experiencing similar seasonal variability and long-term stability. Philadelphia did have about half an inch more of precipitation on average per year. Extreme events are outliers in this chart. Despite the geographic differences, both locations are generally similar and stable implying that regional weather systems have a stronger influence than just terrain, elevation, etc. This comparison provides a clear view of how precipitation behaves in the Mid-Atlantic region.
 
 # Discussion
-
 We don't technically need a dedicated section for this, we just need a larger narrative that connects our insights and explains the overall data story (Line 72 of the Project Guidelines File). The alternative would be writing a paragraph or two after the analysis of our final figure.
 
-
-
 # Author Contributions
-
-Quinn
+Quinn Hughes
 - Paradigm/perspective 
 - Data Provence 
-- Temperature plots and insight
+- Temperature Plots and Insight
 
+Raouf Halabi
+- README File
+- FAIR and CARE Principles
+- Precipitation Plots and Insight
+
+Evan Grebner
+- Introduction
+- Template Formatting
+- Snowfall Plots and Insight
 
 # References
 National Centers for Environmental Information. (2025). Custom GHCN-Daily CSV [Data set]. National Oceanic and Atmospheric Administration. https://www.ncei.noaa.gov/cdo-web/datasets#GHCND
