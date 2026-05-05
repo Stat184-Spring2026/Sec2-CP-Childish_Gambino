@@ -16,6 +16,14 @@ library(kableExtra)
 
 ```
 
+#Introduction
+For this project, we are using a tidyverse data analysis perspective and a exploratory analysis perspective.
+
+For the coding work, we use the tidyverse paradigm because the data is being cleaned, organized, summarized, and visualized step by step. Functions like mutate(), select(), group_by(), summarize(), and ggplot() allowed us to take the raw NOAA weather data and turn it into readable tables and plots. This approach is useful because each step builds logically on the previous one, making the code easier to follow and explain.
+
+For the data analysis, we use a exploratory perspective because our goal is to explore NOAA temperature data and identify patterns instead of testing one formal hypothesis. By summarizing temperatures by season and decade and creating visualizations, we can compare Philadelphia and State College and look for possible differences in temperature patterns over time. EDA is useful for this project because it helps reveal trends, seasonal changes, and location-based differences in the data.
+
+
 # Temperature Insights
 
 This section explores the temperature data for Philadelphia and State College. The data includes daily maximum, minimum, and observed temperatures. We are trying to find out how temperature patterns compare between the two locations, how those patterns vary across the four seasons, and how the trends have changed or stayed the same over the last 20 years. This will be shown through a table and plots. 
