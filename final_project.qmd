@@ -16,7 +16,7 @@ library(kableExtra)
 
 ```
 
-#Introduction
+# Introduction
 For this project, we are using a tidyverse data analysis perspective and a exploratory analysis perspective.
 
 For the coding work, we use the tidyverse paradigm because the data is being cleaned, organized, summarized, and visualized step by step. Functions like mutate(), select(), group_by(), summarize(), and ggplot() allowed us to take the raw NOAA weather data and turn it into readable tables and plots. This approach is useful because each step builds logically on the previous one, making the code easier to follow and explain.
@@ -209,6 +209,12 @@ combined_weather <- bind_rows(
   philadelphia_weather |> mutate(place = "Philadelphia"),
   state_college_weather |> mutate(place = "State College")
 )
+```
+
+```{r}
+#| fig-cap: "Temperature distribution by season for Philadelphia and State College"
+#| fig-alt: "Boxplot comparing average daily temperatures by season for Philadelphia and State College. Each season has two boxes, one for each location, showing the spread and median temperature values."
+
 #Plot 
 ggplot(combined_weather, aes(x = season, y = avg_temp, fill = place)) +
   geom_boxplot() +
@@ -241,6 +247,11 @@ combined_slope <- bind_rows(philadelphia_slope, state_college_slope) |>
     decade = factor(decade, levels = c("06-15", "16-25")),
     season = factor(season, levels = c("Winter", "Spring", "Summer", "Fall"))
   )
+```
+
+```{r}
+#| fig-cap: "Change in average temperature between decades by season and location"
+#| fig-alt: "Slope chart showing average seasonal temperatures for Philadelphia and State College across two decades. Each panel represents one season, with lines connecting average temperatures from 2006 to 2015 and 2016 to 2025."
 
 ggplot(
   combined_slope,
