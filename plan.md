@@ -1,8 +1,5 @@
 # Initial Course Project Plan
 
-> **Status:** Working draft. This file will be updated as we proceed with the project and gather more concrete details about our research.
-
----
 
 This document contains the active plan for our State College Weather Data Analysis Project
 
@@ -19,27 +16,41 @@ Our goal as a group is to explore weather trends for the city of State College u
 
 ## Needs
 
-We are going to need the {ggplot2} package to create our plots, and we will need the rest of the tidyverse({dplyr}, {tidyr}, {readr}) for cleaning and reshaping the data. For tables we will need {knitr} and {janitor}. Most importantly, we need the two datasets of State College and Philadalphia's weather data.
+We are going to need the {ggplot2} package to create our plots, and we will need the rest of the tidyverse({dplyr}, {tidyr}, {readr}) for cleaning and reshaping the data. For tables we will need {knitr} and {janitor}. Most importantly, we need the two datasets of State College and Philadalphia's weather data. We will also need to render and examine all plots and tables generated to ensure readability. 
 
 ## Steps 
 
-1. Locate and collect our weather data from the NOAA.gov website
-2. Inspect the raw data to see column names and check if any tidying or wrangling needs to be done before we can begin our analysis
-3. Create the team GitHub repository and add team members
-4. Write and commit both the README.md and plan.md documents to set up the context for the repository
-5. Create a quarto file to begin creating our reproducible data analysis
-6. Add an appropriate YAML header with the required fields added and format set to pdf
-7. In an R code chunk within our .qmd file, specify our coding style and load all packages required for this data (All code chunks should be properly labeled and include comments about the primary author)
-8. In a code chunk labeled weather-wrangling, clean and wrangle the weather data using dplyr and tidyr to reshape the data for further manipulation
-9. Write an Introduction section to introduce the background information and context for the report
-10. Build a polished, informative summary table for our dataset displaying several statistics from the data (Each team member will create a table for the report)
-11. Write an informative narrative text to further explain and describe what the table is meant to illustrate.
-12. Build the plots for our temperature and precipitation data using ggplot2 and ggplot2's design features for accessibility and readability (Each team member will create their own plot with different information being displayed)
-13. Write a powerful and informative narrative on the plots that were created in the previous step.
-14. Construct a Final Review/ Summary section that will discuss the general purpose of our report, and reviewing any discoveries we have made about our data and weather trends
-15. Add a citations page to show where the data we are using came from
-16. Add an auto generated code appendix to the end of the document
-17. Using lintr::lint() to detect and then fix any syntax or style errors within our document
-18. Review the document to ensure that all figures and tables have a valid alt text for accessibility. Ensure that all written narratives for plots and tables are easy to understand and do more than simply describing the appearance of the visualization.
-19. Render the PDF to verify that all tables and figures render properly and make any necessary changes for the formatting or content of our report.
-  
+1. Initial Project Set Up and Data Collection
+    - Locate and collect our two sets of weather data from the NOAA.gov website
+    - Inspect the raw data to see column names and verify if any tidying or wrangling should be done for our analysis
+    - Create and set up our team Github repository
+    - Write and commit the ReadME and plan docuemnts for context and guidence for the project and repository
+
+2. Create the QMD file
+    - Create a quarto file and add the YAML header with format set as PDF
+    - In an initial R code chunk, specify the coding style used and load required packages for the project
+    - Create a code chunk for data wrangling (clean and combine tables for further analysis)
+
+3. Build the Analysis for our Report ( All Code Chunks should have an Author and Reviewer Section and should be properly labeled)
+   - Write an Introduction section to explain context and purpose
+   - Discuss our Data and it's features (Data Provenance, FAIR AND CARE)
+   - Tasks for each team member:
+     - Build a polished and informative table for our dataset
+     - Build a polished plot using ggplot2
+       - Each plot should be of a unique geometry and accessible
+     - Write informative narratives for each table and plot created
+   
+4. Gather Insights and finish sections of the Report
+    - Build A Summary/Discussion section that will talk about our overall findings and the purpose of the report
+    - Add the Author Contributions Page discussion our share of work
+    - Add the Citations page
+    - Add an auto generated code appendix to the bottom of our report
+
+5. Polish and Finalize Report
+    - Using lintr, find and fix any style or syntax errors that appear in our document
+    - Review the final document to ensure that all figures have alt text for accessibility features.
+    - Ensure that any written sections and narratives are understandable and insightful and not simply describing what is shown in the visuals.
+    - Render the PDF to verify that the document renders properly and make any necesssary formatting changes
+    - Final Read of the PDF Report to ensure there are no remaining issues in our code and it is ready for submission
+
+
