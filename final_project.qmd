@@ -1,30 +1,106 @@
 ---
-title: "final_project"
-format: pdf
+title: "Comparing Weather Trends in State College and Philadelphia, 2006-2025"
+author:
+  - "Evan Grebner"
+  - "Quinn Hughes"
+  - "Ralph Halabi"
+date: today
+format:
+  pdf:
+    toc: true
+    number-sections: true
+execute:
+  echo: false
+  warning: false
+  message: false
 ---
 
-## Quarto
-
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
-
-## Running Code
-
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
-
 ```{r}
-1 + 1
+#| label: setup
+#| include: false
+# Author:   Evan Grebner
+# Reviewer: Ralph Halabi
+# Purpose:  Load the required packages for the report.
+
+# Style: All code in this document uses the Tidyverse Style Guide
+
+# Tidyverse family of Packages for data wrangling and plotting
+library(dplyr)
+library(tidyr)
+library(readr)
+library(lubridate)
+library(ggplot2)
+
+# Tables
+library(knitr)
+library(kableExtra)
 ```
 
-You can add options to executable code like this 
-
 ```{r}
-#| echo: false
-2 * 2
+#| label: data-wrangling
+#| include: false
+# Author: Evan Grebner  
+# Reviewers: Ralph Halabi, Quinn Hughes
+# Purpose: Build the initial wrangled data frame, containing both cities data and the variables used for analysis, used by all plot and table code chunks in this report
+
+# 1. File paths for the two stations csv data
+state_college_path <- "state_college_weather.csv"
+philadelphia_path  <- "philadelphia_weather.csv"
+
+# 2. Read the files and mark the locations 
+state_college <- read_csv(file = state_college_path) |>
+  mutate(location = "State College")
+
+philadelphia <- read_csv(file = philadelphia_path) |>
+  mutate(location = "Philadelphia")
+
+# 3. Combine the two datasets, rename and create variables, fill NAs, and filter to create a dataset containing all values needed for analysis
+weather_combined <- bind_rows(
+  
+  state_college |> select(location, DATE, PRCP, SNOW, SNWD, TMAX, TMIN, TOBS),
+  
+  philadelphia |> select(location, DATE, PRCP, SNOW, SNWD, TMAX, TMIN, TOBS)
+  
+) |>
+  rename(
+    date = DATE,
+    tmax = TMAX,
+    tmin = TMIN,
+    tobs = TOBS,
+    precipitation = PRCP,
+    snowfall = SNOW,
+    snow_depth = SNWD
+    
+  ) |>
+  mutate(
+    date = ymd(date),
+    year = year(date),
+    month_num = month(date),
+    # for seasonal analysis
+    season = case_when(
+      month_num %in% c(12, 1, 2) ~ "Winter",
+      month_num %in% c(3, 4, 5) ~ "Spring",
+      month_num %in% c(6, 7, 8) ~ "Summer",
+      month_num %in% c(9, 10, 11) ~ "Fall"
+    ),
+    # for analyzing by the decade
+    decade = case_when(
+      year >= 2006 & year <= 2015 ~ "06-15",
+      year >= 2016 & year <= 2025 ~ "16-25"
+    ),
+    avg_temp = (tmax + tmin) / 2, 
+    snowfall = replace_na(snowfall, 0),
+    precipitation = replace_na(precipitation, 0)
+  ) |>
+  filter(year >= 2006, year <= 2025)
 ```
 
-<<<<<<< Updated upstream
 The `echo: false` option disables the printing of code (only output is displayed).
-=======
+
+# Introduction
+
+Weather influences a surprising number of everyday decisions, whether it's what to wear, planning events, or even what you make for dinner. Yet most people rarely look further than the next day's forecast. Two cities can be only a couple hundred miles apart in the same state and still feel like completely different climates to someone who has been to both. State College and Philadelphia are a great example of this. State College sits inland in the Appalachian foothills with an elevation of approximately 1,200 feet, while Philadelphia lies on the eastern coastal plain near sea level. Their geographic separation, along with the difference in elevation, raises a natural question: how different is the weather that these two cities actually experience?
+
 This report will explore that question using the last two decades of daily weather records collected by the National Oceanic and Atmospheric Administration. There are over 7,000 daily observations for both cities, providing us with enough data to look at long-term weather trends and how their climates compare.
 
 Our work follows the Exploratory Data Analysis approach, focusing mainly on what the data actually reveals rather than trying to prove a specific point. We narrowed our analysis down to three main angles: how precipitation totals compare month by month, how temperature is distributed across the four seasons, and how each city's annual snowfall compares. Together, these angles paint a picture of two cities that are close in proximity but experience noticeably different climates.
@@ -49,10 +125,8 @@ CARE
 Collective Benefit
 Weather data is not privately owned information, which is why NOAA offer the data to the public. Weather can be especially destructive at different times of the year; the data helps track potential or eminent floods, hurricanes, tornadoes, blizzards and various other natural disasters to help warn the community and keep the aware. Climate research is also done using NOAA data to help understand long term climate trends and see how we can protect the planet and make it as habitable as possible for life on Earth.
 
-<<<<<<< Updated upstream
 Authority to Control
 Being that NOAA is a government agency, their work is supposed to act in the best interest of the people, which we believe they have been. The data being free to the public is one example of this, however other weather companies such as The Weather Channel and AccuWeather collect their own data in-house which is only available to them. They have been working to make it so NOAA can't publish their data for free as they feel it rivals their business model. Many scientists belive that weather has no borders however, and have been working to keep the weather data as open-source and collaborator friendly as possible.
-=======
 ## FAIR and CARE Principles
 # FAIR and CARE Principles
 FAIR
@@ -79,6 +153,38 @@ Responsibility
 NOAA holds complete control over the accuracy of the data. In the grand scheme of things, being off by one degree on the temperature for one day seems like an insignificant difference overall, however when we have constantly advancing technology to track data, we want to assume that the data is being properly collected. It's also imperative when we are studying something serious like the possibility of a natural disaster occuring. Now their is little we can do against a Category 5 Hurricane or extreme flooding in a short period of time, however we can be prepared for it. If the data is misread or collected poorly and we underestimate how strong a storm ends up being, than NOAA would have to take responsibility for misreporting the data and underpreparing the community.
 
 Ethics
+
+
+# Data
+
+## Data Provenance
+
+
+## FAIR and CARE Principles
+### FAIR
+#### Findable
+The data was fairly easy to locate. Publicly available on the National Oceanic and Atmospheric Administration's (NOAA) website with an entire section dedicated to explaining how to select the correct dataset. Being that a lot of weather apps and companies use NOAA's data and them being government agency, they almost encourage those to utilize the data for whatever personal project people want to do.
+
+#### Accessible
+Having an entire webpage dedicated to selecting what dataset you want from any location and time frame in the United States, the data being inaccessible was not an issue. Again, NOAA is encouraging those to utilize their data.
+
+#### Interperable
+NOAA has their own code for some weather conditions, such as using 1 or 0 if there was or wasn't fog in the area, respectively and just having confusing column naming systems, such as WT11 for high wind for example. A legend could be found on NOAA's website luckily, so when the csv files were uploaded into R Studio, we just had to rename the columns to make it easier to analyze the data later on when we got to the analysis portion of the code.
+
+####Reusable
+The data is absolutely reusable. Previous weather data is never going to change. Once the day passes, the weather is logged and stored for future reuse in data analytics. It's important to keep an organized weather data collection that is maintained often. NOAA does a great job with this to ensure future reusability when needed.
+
+### CARE
+#### Collective Benefit
+Weather data is not privately owned information, which is why NOAA offer the data to the public. Weather can be especially destructive at different times of the year; the data helps track potential or eminent floods, hurricanes, tornadoes, blizzards and various other natural disasters to help warn the community and keep the aware. Climate research is also done using NOAA data to help understand long term climate trends and see how we can protect the planet and make it as habitable as possible for life on Earth.
+
+#### Authority to Control
+Being that NOAA is a government agency, their work is supposed to act in the best interest of the people, which we believe they have been. The data being free to the public is one example of this, however other weather companies such as The Weather Channel and AccuWeather collect their own data in-house which is only available to them. They have been working to make it so NOAA can't publish their data for free as they feel it rivals their business model. Many scientists belive that weather has no borders however, and have been working to keep the weather data as open-source and collaborator friendly as possible.
+
+#### Responsibility
+NOAA holds complete control over the accuracy of the data. In the grand scheme of things, being off by one degree on the temperature for one day seems like an insignificant difference overall, however when we have constantly advancing technology to track data, we want to assume that the data is being properly collected. It's also imperative when we are studying something serious like the possibility of a natural disaster occuring. Now their is little we can do against a Category 5 Hurricane or extreme flooding in a short period of time, however we can be prepared for it. If the data is misread or collected poorly and we underestimate how strong a storm ends up being, than NOAA would have to take responsibility for misreporting the data and underpreparing the community.
+
+#### Ethics
 NOAA operates different from a traditional company as they are government owned, meaning they give their data away vs some of the other aforementioned companies. weather is an important part of day to day activities for any one person. It impacts everyone. Making sure their is proper funding to support publicly available data in underrepresented communities and lower-income areas is imperative. This data should not flex to incomes, or skin color. It's numbers that can help save people and give everyone a chance to prepare for the day.
 
 ## Attributes Used in This Analysis
@@ -96,6 +202,17 @@ NOAA operates different from a traditional company as they are government owned,
 # Monthly Precipitation Trends 
 
 
+# Narrative Text
+This section compares the precipitation levels over a span of 20 years using NOAA datasets, focusing on the trends in Philadelphia and State College, Pennsylvania.
+
+The visualization presents monthly precipitation totals for each city, with individual monthly observations shown as grey lines and the average trend line is blue. This approach allows the reader to see the variability per season as well as the long term changes in precipitation in both areas.
+
+From the chart, both locations exhibit noticeable variability in monthly precipitation, with occasional spikes due to the changing seasons. We did notice a spike in rainfall in August 2011, more in Philadelphia than State College, but still a noticeable spike, but this was due to a couple of factors. The first major weather factor was Tropical Storm Lee, a slow moving storm that sat in one location dumping a lot of rain on already saturated ground and flooding the area. That happened in the beginning of August while Hurricane Irene showed up later in the month of August. A Category 1 storm, still brought substantial rainfall and giving little break for recovery between both larger systems. A low pressure system was also in place, pushing the storms out towards the Atlantic Ocean, which explains why the storms sat in Philadelphia longer than in State College. All of this being unfortunate timing combined for these historic rainfall conditions. Despite this one blip in the chart, the overall trends for both cities remain relatively similar despite their difference in elevation, which we belived would have an impact on the amount of rainfall between the cities.
+
+Overall, the analysis demonstrates that while precipitation in Philadelphia and State College are broadly consistent over time, with both cities experiencing similar seasonal variability and long-term stability. Extreme events are outliers in this chart. Despite the geographic differences, both locations are generally similar and stable implying that regional weather systems have a stronger influence than just terrain, elevation, etc. This comparison provides a clear view of how precipitation behaves in the Mid-Atlantic region.
+
+![Precipitation levels month to month between Philladelphia and State College
+prompt.](precipitation.png)
 
 # Discussion
 
@@ -113,11 +230,10 @@ We don't technically need a dedicated section for this, we just need a larger na
 
 # Code Appendix
 
->>>>>>> Stashed changes
 
 Responsibility
 NOAA holds complete control over the accuracy of the data. In the grand scheme of things, being off by one degree on the temperature for one day seems like an insignificant difference overall, however when we have constantly advancing technology to track data, we want to assume that the data is being properly collected. It's also imperative when we are studying something serious like the possibility of a natural disaster occuring. Now their is little we can do against a Category 5 Hurricane or extreme flooding in a short period of time, however we can be prepared for it. If the data is misread or collected poorly and we underestimate how strong a storm ends up being, than NOAA would have to take responsibility for misreporting the data and underpreparing the community.
 
 Ethics
 NOAA operates different from a traditional company as they are government owned, meaning they give their data away vs some of the other aforementioned companies. weather is an important part of day to day activities for any one person. It impacts everyone. Making sure their is proper funding to support publicly available data in underrepresented communities and lower-income areas is imperative. This data should not flex to incomes, or skin color. It's numbers that can help save people and give everyone a chance to prepare for the day.
->>>>>>> Stashed changes
+
