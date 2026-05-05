@@ -162,8 +162,9 @@ From the chart, both locations exhibit noticeable variability in monthly precipi
 
 Overall, the analysis demonstrates that while precipitation in Philadelphia and State College are broadly consistent over time, with both cities experiencing similar seasonal variability and long-term stability. Extreme events are outliers in this chart. Despite the geographic differences, both locations are generally similar and stable implying that regional weather systems have a stronger influence than just terrain, elevation, etc. This comparison provides a clear view of how precipitation behaves in the Mid-Atlantic region.
 
-![Precipitation levels month to month between Philladelphia and State College
-prompt.](precipitation.png)
+![Precipitation summary table between Philadelphia and State College](rainfall_table.png)
+
+![Precipitation levels month to month between Philadelphia and State College](precipitation.png)
 
 # Discussion
 
