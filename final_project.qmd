@@ -313,8 +313,9 @@ The values in @tbl-snowfall-summary support the trends that were displayed in @f
 ## Introduction to Temperature
 
 
-## Temperature Insights
 This section explores the temperature data for Philadelphia and State College. The data includes daily maximum, minimum, and observed temperatures. We are trying to find out how temperature patterns compare between the two locations, how those patterns vary across the four seasons, and how the trends have changed or stayed the same over the last 20 years. This will be shown through a table and plots. 
+
+{{< pagebreak >}}
 
 
 ```{r}
@@ -427,6 +428,7 @@ kable(
 ) |>
   kable_styling(
     bootstrap_options = c("striped", "hover", "condensed"),
+    latex_options = c("striped", "hold_position"),
     full_width = FALSE,
     position = "center"
   ) |>
@@ -439,7 +441,6 @@ kable(
 ## Philadelphia Table Interpretation
 @tbl-philadelphia-temperature showcases the four seasons and data about them for both decades in degrees Fahrenheit. Notable figures are the high of 103 in the first decade and low of -2 also in the first decade. As well as, average temperatures spanning from 25.2 to 74.8. 
 
-{{< pagebreak >}}
 ```{r}
 #| label: tbl-state-college-temperature
 #State college table
@@ -687,16 +688,18 @@ After the analysis in terms of temperature, precipitation, and snowfall, the two
 # Author Contributions
 Quinn Hughes
 - Paradigm/perspective 
-- Data Provence 
+- Data Provenance 
 - Temperature Plots and Insight
 
 Raouf Halabi
 - README File
 - FAIR and CARE Principles
 - Precipitation Plots and Insight
+- Discussion
 
 Evan Grebner
 - Introduction
+- Plan Document
 - Template Formatting
 - Snowfall Plots and Insight
 
