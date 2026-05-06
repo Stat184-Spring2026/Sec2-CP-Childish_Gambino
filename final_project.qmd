@@ -437,7 +437,7 @@ kable(
 ```
 
 ## Philadelphia Table Interpretation
-This table showcases the four seasons and data about them for both decades in degrees Fahrenheit. Notable figures are the high of 103 in the first decade and low of -2 also in the first decade. As well as, average temperatures spanning from 25.2 to 74.8. 
+@tbl-philadelphia-temperature showcases the four seasons and data about them for both decades in degrees Fahrenheit. Notable figures are the high of 103 in the first decade and low of -2 also in the first decade. As well as, average temperatures spanning from 25.2 to 74.8. 
 
 {{< pagebreak >}}
 ```{r}
@@ -473,7 +473,7 @@ kable(
 ```
 
 ## State College table interpretation
-This table showcases the four seasons and temperature data for State College across both decades in degrees Fahrenheit. Notable figures include the highest recorded temperature of 101°F during summer in the first decade and the lowest recorded temperature of -9°F during winter in the first decade. The average temperatures range from 29.5°F in winter during 2006-2015 to 71.6°F in summer during 2016-2025. 
+@tbl-state-college-temperature showcases the four seasons and temperature data for State College across both decades in degrees Fahrenheit. Notable figures include the highest recorded temperature of 101°F during summer in the first decade and the lowest recorded temperature of -9°F during winter in the first decade. The average temperatures range from 29.5°F in winter during 2006-2015 to 71.6°F in summer during 2016-2025. 
 
 
 ## Temperature Plots
@@ -526,7 +526,7 @@ ggplot(combined_weather, aes(x = season, y = avg_temp, fill = place)) +
 ```
 
 ## Analysis
-Comparing the Philadelphia and State College tables and plot shows that Philadelphia is consistently warmer across every season and both 10-year periods. Philadelphia’s average winter temperatures were 33.9°F from 2006-2015 and 35.0°F from 2016-2025, while State College’s were lower at 29.5°F and 31.5°F. The same pattern appears in summer, where Philadelphia averaged 74.2°F and 74.8°F, compared to State College’s 70.8°F and 71.6°F. Both locations show a slight increase in average temperatures from the first decade to the second, especially in winter and summer, suggesting a small warming trend over time. Philadelphia also had the highest recorded temperature overall at 103°F, while State College reached 101°F. However, State College had the colder extreme, dropping to -9°F, compared to Philadelphia’s lowest temperature of -2°F. Overall, the tables suggest that Philadelphia has a warmer and slightly milder climate, while State College experiences colder winter conditions and a wider range of cold extremes. This could be credited to State College's higher elevation and distance from the coast. 
+Comparing the Philadelphia and State College tables (@tbl-philadelphia-temperature, @tbl-state-college-temperature) and the boxplot in @fig-temperature-boxplot shows that Philadelphia is consistently warmer across every season and both 10-year periods. Philadelphia’s average winter temperatures were 33.9°F from 2006-2015 and 35.0°F from 2016-2025, while State College’s were lower at 29.5°F and 31.5°F. The same pattern appears in summer, where Philadelphia averaged 74.2°F and 74.8°F, compared to State College’s 70.8°F and 71.6°F. Both locations show a slight increase in average temperatures from the first decade to the second, especially in winter and summer, suggesting a small warming trend over time. Philadelphia also had the highest recorded temperature overall at 103°F, while State College reached 101°F. However, State College had the colder extreme, dropping to -9°F, compared to Philadelphia’s lowest temperature of -2°F. Overall, the tables suggest that Philadelphia has a warmer and slightly milder climate, while State College experiences colder winter conditions and a wider range of cold extremes. This could be credited to State College's higher elevation and distance from the coast. 
 
 ```{r}
 #| label: fig-temperature-slope-data
@@ -575,13 +575,13 @@ ggplot(
 ```
 
 ## Overall Trend
-We can also see clearly from this plot that, while the changes are not massive, temperatures are rising in all four seasons and in both places. The slopes for all eight lines are very similar signifying that the temperature changes are at the least a regional trend. This could be caused by global warming or climate change.
+We can also see clearly from @fig-temperature-slope that, while the changes are not massive, temperatures are rising in all four seasons and in both places. The slopes for all eight lines are very similar signifying that the temperature changes are at the least a regional trend. This could be caused by global warming or climate change.
 
 
 # Monthly Precipitation Trends
 This section compares the precipitation levels over a span of 20 years using NOAA datasets, focusing on the trends in Philadelphia and State College, Pennsylvania.
 
-The visualization presents monthly precipitation totals for each city, with individual monthly observations shown as grey lines and the average trend line is blue. This approach allows the reader to see the variability per season as well as the long term changes in precipitation in both areas. The table also discusses basic metrics comparing the two cities precipitation levels.
+@fig-precipitation presents monthly precipitation totals for each city, with individual monthly observations shown as grey lines and the average trend line is blue. This approach allows the reader to see the variability per season as well as the long term changes in precipitation in both areas. @tbl-precipitation also discusses basic metrics comparing the two cities precipitation levels.
 
 ```{r}
 #| label: precipitation-analysis
@@ -607,7 +607,10 @@ weather_monthly <- weather_combined |>
 ```
 
 ```{r}
+#| label: tbl-precipitation
 #| fig-alt: "Table showing basic precipitation statistics between State College and Philadelphia (2006 - 2026)"
+# Author: Raouf Halabi
+# Reviewer: Evan Grebner
 # Rain Table
 rain_table <- weather_monthly |>
   group_by(City) |>
@@ -639,7 +642,14 @@ knitr::kable(
 ```
 
 ```{r}
+#| label: fig-precipitation
+#| fig-cap: "Monthly precipitation trends for Philadelphia and State College, 2006-2025."
 #| fig-alt: "Monthly average precipitation chart between Philadelphia and State college (2006 - 2026)"
+#| fig-align: center
+#| out-width: "85%"
+#| fig-pos: "H"
+# Author: Raouf Halabi
+# Reviewer: Quinn Hughes
 
 # Plot monthly precipitation comparison
 ggplot(weather_monthly, aes(x = month, y = total_precipitation)) +
@@ -659,7 +669,7 @@ ggplot(weather_monthly, aes(x = month, y = total_precipitation)) +
   )
 ```
 
-From the chart, both locations exhibit noticeable variability in monthly precipitation, with occasional spikes due to the changing seasons. We did notice a spike in rainfall in August 2011, more in Philadelphia than State College, but still a noticeable spike, but this was due to a couple of factors. The first major weather factor was Tropical Storm Lee, a slow moving storm that sat in one location dumping a lot of rain on already saturated ground and flooding the area. That happened in the beginning of August while Hurricane Irene showed up later in the month of August. A Category 1 storm, still brought substantial rainfall and giving little break for recovery between both larger systems. A low pressure system was also in place, pushing the storms out towards the Atlantic Ocean, which explains why the storms sat in Philadelphia longer than in State College. All of this being unfortunate timing combined for these historic rainfall conditions. Despite this one blip in the chart, the overall trends for both cities remain relatively similar despite their difference in elevation, which we belived would have an impact on the amount of rainfall between the cities.
+From @fig-precipitation, both locations exhibit noticeable variability in monthly precipitation, with occasional spikes due to the changing seasons. We did notice a spike in rainfall in August 2011, more in Philadelphia than State College, but still a noticeable spike, but this was due to a couple of factors. The first major weather factor was Tropical Storm Lee, a slow moving storm that sat in one location dumping a lot of rain on already saturated ground and flooding the area. That happened in the beginning of August while Hurricane Irene showed up later in the month of August. A Category 1 storm, still brought substantial rainfall and giving little break for recovery between both larger systems. A low pressure system was also in place, pushing the storms out towards the Atlantic Ocean, which explains why the storms sat in Philadelphia longer than in State College. All of this being unfortunate timing combined for these historic rainfall conditions. Despite this one blip in the chart, the overall trends for both cities remain relatively similar despite their difference in elevation, which we belived would have an impact on the amount of rainfall between the cities.
 
 Overall, the analysis demonstrates that while precipitation in Philadelphia and State College are broadly consistent over time, with both cities experiencing similar seasonal variability and long-term stability. Philadelphia did have about half an inch more of precipitation on average per year. Extreme events are outliers in this chart. Despite the geographic differences, both locations are generally similar and stable implying that regional weather systems have a stronger influence than just terrain, elevation, etc. This comparison provides a clear view of how precipitation behaves in the Mid-Atlantic region.
 
@@ -700,4 +710,6 @@ National Centers for Environmental Information. (2025). Custom GHCN-Daily CSV [D
 #| ref.label: !expr knitr::all_labels()
 #| echo: true
 #| eval: false
+# Author: Evan Grebner
+# Reviewer: Quinn Hughes
 ```
