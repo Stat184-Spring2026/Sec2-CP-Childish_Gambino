@@ -556,8 +556,6 @@ ggplot(
     plot.title = element_text(face = "bold"),
     legend.position = "bottom"
   )
-
-
 ```
 
 ## Overall Trend
@@ -565,7 +563,6 @@ We can also see clearly from this plot that, while the changes are not massive, 
 
 
 # Monthly Precipitation Trends
-
 This section compares the precipitation levels over a span of 20 years using NOAA datasets, focusing on the trends in Philadelphia and State College, Pennsylvania.
 
 The visualization presents monthly precipitation totals for each city, with individual monthly observations shown as grey lines and the average trend line is blue. This approach allows the reader to see the variability per season as well as the long term changes in precipitation in both areas. The table also discusses basic metrics comparing the two cities precipitation levels.
@@ -590,7 +587,10 @@ weather_monthly <- weather_combined |>
     .groups = "drop"
   ) |>
   rename(City = location)
+```
 
+```{r}
+#| fig-alt: "Table showing basic precipitation statistics between State College and Philadelphia (2006 - 2026)"
 # Rain Table
 rain_table <- weather_monthly |>
   group_by(City) |>
@@ -619,6 +619,10 @@ knitr::kable(
     font_size = 11
   ) |>
   column_spec(1, bold = TRUE)
+```
+
+```{r}
+#| fig-alt: "Monthly average precipitation chart between Philadelphia and State college (2006 - 2026)"
 
 # Plot monthly precipitation comparison
 ggplot(weather_monthly, aes(x = month, y = total_precipitation)) +
@@ -643,7 +647,15 @@ From the chart, both locations exhibit noticeable variability in monthly precipi
 Overall, the analysis demonstrates that while precipitation in Philadelphia and State College are broadly consistent over time, with both cities experiencing similar seasonal variability and long-term stability. Philadelphia did have about half an inch more of precipitation on average per year. Extreme events are outliers in this chart. Despite the geographic differences, both locations are generally similar and stable implying that regional weather systems have a stronger influence than just terrain, elevation, etc. This comparison provides a clear view of how precipitation behaves in the Mid-Atlantic region.
 
 # Discussion
-We don't technically need a dedicated section for this, we just need a larger narrative that connects our insights and explains the overall data story (Line 72 of the Project Guidelines File). The alternative would be writing a paragraph or two after the analysis of our final figure.
+State College and Philadelphia sit about 200 miles apart, a 3 hour drive. That may seem far, but the data meaningful describes a tale of two cities with very similar climates despite the different geographies. 
+
+Philadelphia runs consistently warmer across every season, averaging roughly 4–5°F higher than State College, a gap driven by its lower coastal elevation and its proximity to the Atlantic Coast. That same coastal exposure, however, is what leads to it's increase in precipiation (despite the people of Philadelphia belittling their cross state neighbors Pittsburgh for having cloudy skies consistently).
+
+The precipitation data shows the two cities are surprisingly similar in annual rainfall totals, but Philadelphia does expereince more nor'easters and coastal storm systems due to the nature of the atmospheric pressure systems pushing out towards the Atlantic Ocean, moving and sitting directly over Philadelphia. As seen in the historic August 2011 spike from Tropical Storm Lee and Hurricane Irene arriving in rapid succession.
+
+In terms of snowfall, State College's georgraphy does hold a direct impact on the increase in snowfall. Being in the Appalachain mountains, snow steadily accumulates throughout the winter, logging more than double the snow days of Philadelphia each year. Being at 1,154 ft above sea level in State College vs. 39 feet above sea level in Philadelphia does make a difference in terms of the snow. 
+
+After the analysis in terms of temperature, precipitation, and snowfall, the two cities are more alike and different than we thought. We believe that the geography does not impact the weather as much as we thought it did despite their being a sizable distance between the two locations.
 
 # Author Contributions
 Quinn Hughes
