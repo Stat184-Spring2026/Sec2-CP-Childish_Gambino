@@ -40,7 +40,7 @@ library(kableExtra)
 #| label: data-wrangling
 #| include: false
 # Author: Evan Grebner  
-# Reviewers: Ralph Halabi, Quinn Hughes
+# Reviewers: Raouf Halabi, Quinn Hughes
 # Purpose: Build the initial wrangled data frame, containing both cities data and the variables used for analysis, used by all plot and table code chunks in this report
 
 
@@ -113,36 +113,40 @@ For the coding work, we use the tidyverse paradigm because the data is being cle
 For the data analysis, we use a exploratory perspective because our goal is to explore NOAA temperature data and identify patterns instead of testing one formal hypothesis. By summarizing temperatures by season and decade and creating visualizations, we can compare Philadelphia and State College and look for possible differences in temperature patterns over time. EDA is useful for this project because it helps reveal trends, seasonal changes, and location-based differences in the data.
 
 
-# FAIR and CARE Principles
+# Data
 
-# FAIR
-## Findable
+## FAIR and CARE Principles
+
+### FAIR
+
+#### Findable
 The data was fairly easy to locate. Publicly available on the National Oceanic and Atmospheric Administration's (NOAA) website with an entire section dedicated to explaining how to select the correct dataset. Being that a lot of weather apps and companies use NOAA's data and them being government agency, they almost encourage those to utilize the data for whatever personal project people want to do.
 
-## Accessible
+#### Accessible
 Having an entire webpage dedicated to selecting what dataset you want from any location and time frame in the United States, the data being inaccessible was not an issue. Again, NOAA is encouraging those to utilize their data.
 
-## Interperable
+#### Interperable
 NOAA has their own code for some weather conditions, such as using 1 or 0 if there was or wasn't fog in the area, respectively and just having confusing column naming systems, such as WT11 for high wind for example. A legend could be found on NOAA's website luckily, so when the csv files were uploaded into R Studio, we just had to rename the columns to make it easier to analyze the data later on when we got to the analysis portion of the code.
 
-## Reusable
+#### Reusable
 The data is absolutely reusable. Previous weather data is never going to change. Once the day passes, the weather is logged and stored for future reuse in data analytics. It's important to keep an organized weather data collection that is maintained often. NOAA does a great job with this to ensure future reusability when needed.
 
-# CARE
-## Collective Benefit
+### CARE
+
+#### Collective Benefit
 Weather data is not privately owned information, which is why NOAA offer the data to the public. Weather can be especially destructive at different times of the year; the data helps track potential or eminent floods, hurricanes, tornadoes, blizzards and various other natural disasters to help warn the community and keep the aware. Climate research is also done using NOAA data to help understand long term climate trends and see how we can protect the planet and make it as habitable as possible for life on Earth.
 
-## Authority to Control
+#### Authority to Control
 Being that NOAA is a government agency, their work is supposed to act in the best interest of the people, which we believe they have been. The data being free to the public is one example of this, however other weather companies such as The Weather Channel and AccuWeather collect their own data in-house which is only available to them. They have been working to make it so NOAA can't publish their data for free as they feel it rivals their business model. Many scientists belive that weather has no borders however, and have been working to keep the weather data as open-source and collaborator friendly as possible.
 
-## Responsibility
+#### Responsibility
 NOAA holds complete control over the accuracy of the data. In the grand scheme of things, being off by one degree on the temperature for one day seems like an insignificant difference overall, however when we have constantly advancing technology to track data, we want to assume that the data is being properly collected. It's also imperative when we are studying something serious like the possibility of a natural disaster occuring. Now their is little we can do against a Category 5 Hurricane or extreme flooding in a short period of time, however we can be prepared for it. If the data is misread or collected poorly and we underestimate how strong a storm ends up being, than NOAA would have to take responsibility for misreporting the data and underpreparing the community.
 
-## Ethics
+#### Ethics
 NOAA operates different from a traditional company as they are government owned, meaning they give their data away vs some of the other aforementioned companies. weather is an important part of day to day activities for any one person. It impacts everyone. Making sure their is proper funding to support publicly available data in underrepresented communities and lower-income areas is imperative. This data should not flex to incomes, or skin color. It's numbers that can help save people and give everyone a chance to prepare for the day.
 
 
-# Data Provenance
+## Data Provenance
 The data for this project comes from NOAA, the National Oceanic and Atmospheric Administration. NOAA collects daily weather data from weather stations across the United States, including stations near Philadelphia and State College. These stations record lots of information such as daily high temperature, low temperature, observed temperature, precipitation, snowfall, and snow depth.
 
 For this project, we use two NOAA datasets: one for Philadelphia and one for State College. Each dataset contains daily weather observations from 2006 to 2025. We focus mostly on temperature variables, especially daily maximum temperature, minimum temperature, and average temperature. The data was originally collected to track local weather conditions and build long-term climate records.
@@ -151,6 +155,7 @@ We use this data to compare temperature patterns between Philadelphia and State 
 
 
 # Snowfall Comparison
+
 Annual snowfall is one of the more visible differences you can see between the two cities, since both elevation and proximity to the coast affect how much snow a location gets every year. @fig-yearly-snowfall compares the yearly totals for both stations over the last two decades.
 
 ```{r}
@@ -162,7 +167,7 @@ Annual snowfall is one of the more visible differences you can see between the t
 #| fig-pos: "H"
 
 # Author: Evan Grebner
-# Reviewer: [TBD]
+# Reviewer: Raouf Halabi
 # Purpose: Create a grouped bar chart with yearly snowfall totals for both cities,with the mean annual snowfall shown in the caption for more information
 
 # 1. Get Yearly totals for both locations
@@ -245,7 +250,7 @@ While @fig-yearly-snowfall shows the year-by-year totals for each city, @tbl-sno
 #| label: tbl-snowfall-summary
 
 # Author:   Evan Grebner
-# Reviewer: [TBD]
+# Reviewer: Quinn Hughes
 # Purpose: Create a summary statistics table with annual snowfall total statistics and frequency statistics for both cities.
 
 
@@ -304,14 +309,16 @@ The values in @tbl-snowfall-summary support the trends that were displayed in @f
 
 
 # Temperature Distribution by Season
+
 ## Introduction to Temperature
 
 
-# Temperature Insights
+## Temperature Insights
 This section explores the temperature data for Philadelphia and State College. The data includes daily maximum, minimum, and observed temperatures. We are trying to find out how temperature patterns compare between the two locations, how those patterns vary across the four seasons, and how the trends have changed or stayed the same over the last 20 years. This will be shown through a table and plots. 
 
 
 ```{r}
+#| label: temperature-wrangling
 #Code chunk to wrangle the raw data
 # wrangle and sort by season, 10 year chunk, and average temps 
 philadelphia_weather <- philadelphia |>
@@ -363,6 +370,7 @@ state_college_weather <- state_college |>
 ```
 
 ```{r}
+#| label: temperature-table-creation
 #make the tables
 philadelphia_table <- philadelphia_weather |>
   filter(decade != "Other") |>
@@ -399,6 +407,7 @@ state_college_table <- state_college_weather |>
 ```
 
 ```{r}
+#| label: tbl-philadelphia-temperature
 #Format the tables so that they are professional 
 #Philadelphia table 
 kable(
@@ -432,6 +441,7 @@ This table showcases the four seasons and data about them for both decades in de
 
 {{< pagebreak >}}
 ```{r}
+#| label: tbl-state-college-temperature
 #State college table
 kable(
   state_college_table,
@@ -466,8 +476,9 @@ kable(
 This table showcases the four seasons and temperature data for State College across both decades in degrees Fahrenheit. Notable figures include the highest recorded temperature of 101°F during summer in the first decade and the lowest recorded temperature of -9°F during winter in the first decade. The average temperatures range from 29.5°F in winter during 2006-2015 to 71.6°F in summer during 2016-2025. 
 
 
-# Plot
+## Temperature Plots
 ```{r}
+#| label: fig-temperature-boxplot-data
 #Making the plot 
 # Group by month
 philadelphia_monthly <- philadelphia_weather |>
@@ -496,6 +507,7 @@ combined_weather <- bind_rows(
 ```
 
 ```{r}
+#| label: fig-temperature-boxplot
 #| fig-cap: "Temperature distribution by season for Philadelphia and State College"
 #| fig-alt: "Boxplot comparing average daily temperatures by season for Philadelphia and State College. Each season has two boxes, one for each location, showing the spread and median temperature values."
 
@@ -517,6 +529,9 @@ ggplot(combined_weather, aes(x = season, y = avg_temp, fill = place)) +
 Comparing the Philadelphia and State College tables and plot shows that Philadelphia is consistently warmer across every season and both 10-year periods. Philadelphia’s average winter temperatures were 33.9°F from 2006-2015 and 35.0°F from 2016-2025, while State College’s were lower at 29.5°F and 31.5°F. The same pattern appears in summer, where Philadelphia averaged 74.2°F and 74.8°F, compared to State College’s 70.8°F and 71.6°F. Both locations show a slight increase in average temperatures from the first decade to the second, especially in winter and summer, suggesting a small warming trend over time. Philadelphia also had the highest recorded temperature overall at 103°F, while State College reached 101°F. However, State College had the colder extreme, dropping to -9°F, compared to Philadelphia’s lowest temperature of -2°F. Overall, the tables suggest that Philadelphia has a warmer and slightly milder climate, while State College experiences colder winter conditions and a wider range of cold extremes. This could be credited to State College's higher elevation and distance from the coast. 
 
 ```{r}
+#| label: fig-temperature-slope-data
+# Author: Quinn Hughes
+# Reviewer: Evan Grebner
 #Slope plot
 philadelphia_slope <- philadelphia_table |>
   select(decade, season, average_temp) |>
@@ -534,6 +549,7 @@ combined_slope <- bind_rows(philadelphia_slope, state_college_slope) |>
 ```
 
 ```{r}
+#| label: fig-temperature-slope
 #| fig-cap: "Change in average temperature between decades by season and location"
 #| fig-alt: "Slope chart showing average seasonal temperatures for Philadelphia and State College across two decades. Each panel represents one season, with lines connecting average temperatures from 2006 to 2015 and 2016 to 2025."
 
@@ -568,6 +584,7 @@ This section compares the precipitation levels over a span of 20 years using NOA
 The visualization presents monthly precipitation totals for each city, with individual monthly observations shown as grey lines and the average trend line is blue. This approach allows the reader to see the variability per season as well as the long term changes in precipitation in both areas. The table also discusses basic metrics comparing the two cities precipitation levels.
 
 ```{r}
+#| label: precipitation-analysis
 # Author: Raouf Halabi
 # Reviewer: Quinn Hughes
 # Purpose: Develop the plot and table for the precipitation secion
@@ -678,3 +695,9 @@ National Centers for Environmental Information. (2025). Custom GHCN-Daily CSV [D
 
 
 # Code Appendix
+```{r}
+#| label: code-appendix
+#| ref.label: !expr knitr::all_labels()
+#| echo: true
+#| eval: false
+```
